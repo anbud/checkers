@@ -1,13 +1,15 @@
 package checkersBoard;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import pieces.Figure;
+import figures.Figure;
 
 @SuppressWarnings("serial")
 public class Field extends JPanel {
@@ -17,12 +19,14 @@ public class Field extends JPanel {
 	private JLabel label;
 	private int x;
 	private int y;
+	private boolean visited;
 	
 	public Field(FieldColor color, Figure figure, int x, int y) {
 		this.color = color;
 		this.figure = figure;
 		this.x = x;
 		this.y = y;
+		this.visited = false;
 		setLayout(new BorderLayout());
 		setBackground(color.getColor());
 		label = new JLabel();
@@ -72,4 +76,20 @@ public class Field extends JPanel {
 	public void setYY(int y) {
 		this.y = y;
 	}	
+	
+	public void highlight(boolean selected) {
+		if (selected) {			
+			setBorder(null);						
+		} else {
+			setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
+		}
+	}
+
+	public boolean isVisited() {
+		return visited;
+	}
+
+	public void setVisited(boolean visited) {
+		this.visited = visited;
+	}
 }

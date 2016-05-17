@@ -4,7 +4,7 @@ import java.awt.EventQueue;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -12,20 +12,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import pieces.Figure;
-import pieces.FigureColor;
-import pieces.Piece;
+import figures.Figure;
+import figures.FigureColor;
+import figures.QueenFigure;
+import figures.SimpleFigure;
 
 public class Board {
 
-	public static final int NUM_FIELDS = 10;
-	public static final int TOP = 0;
 	private JFrame frame;
+	private final int NUM_FIELDS = 10;
+	private final int TOP = 0;
 	private Field[][] board = new Field[10][10];
 	private final Icon redFigure = new ImageIcon("src/res/red_piece_60.png");
 	private final Icon woodenFigure = new ImageIcon("src/res/wooden_piece_60.png");
-	private Field source;
-	private List<Field> possibleMoves;		
+	private Field myPosition;
+	private List<Field> possibleMoves;
+	private boolean percussive;
+	private FigureColor onMove;	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -51,61 +54,185 @@ public class Board {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	private void initialize() {	
-		source = null;
-		possibleMoves = new ArrayList<>();
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(10, 10, 0, 0));
-		frame.getContentPane().add(panel);
-		
-		for (int i = 0; i < NUM_FIELDS; i++) {
-			for (int j = 0; j < NUM_FIELDS; j++) {							
-				
-				Figure figure = null;
+	private void initialize() {
+		myPosition = null;
+		possibleMoves = new LinkedList<>();
+		percussive = false;
+		onMove = FigureColor.WOODEN;
 
+		JPanel pnlBoard = setFigures();
+		frame.getContentPane().add(pnlBoard);
+	}
+
+	private JPanel setFigures() {
+		JPanel pnlBoard = new JPanel();
+		pnlBoard.setLayout(new GridLayout(10, 10, 0, 0));
+		for (int i = 0; i < NUM_FIELDS; i++) {
+			for (int j = 0; j < NUM_FIELDS; j++) {
+				Figure figure = null;
 				if ((i + j) % 2 != 0 && (i < 4)) {
-					figure = new Piece(redFigure, FigureColor.RED);
+					figure = new SimpleFigure(redFigure, FigureColor.RED, this);
 				}
 				if ((i + j) % 2 != 0 && (i > 5)) {
-					figure = new Piece(woodenFigure, FigureColor.WOODEN);
+					figure = new SimpleFigure(woodenFigure, FigureColor.WOODEN, this);
 				}
-
 				if ((i + j) % 2 != 0) {
 					board[i][j] = new Field(FieldColor.BLACK, figure, i, j);
 					board[i][j].addMouseListener(listener);
 				} else {
-					board[i][j] = new Field(FieldColor.WHITE, null, i, j);					
+					board[i][j] = new Field(FieldColor.WHITE, null, i, j);
 				}
-				
-				panel.add(board[i][j]);
-			}	
+				pnlBoard.add(board[i][j]);
+			}
+		}
+		return pnlBoard;
+	}
+
+	private void doPromotion() {
+		Figure promoted = new QueenFigure(myPosition.getFigure().getIcon(), myPosition.getFigure().getColor(), this);
+		myPosition.setFigure(null);
+		myPosition.setIcon(null);
+		myPosition.setFigure(promoted);
+		myPosition.setIcon(promoted.getIcon());
+	}
+
+	private void nextOnMove() {
+		if (onMove.equals(FigureColor.WOODEN))
+			onMove = FigureColor.RED;
+		else
+			onMove = FigureColor.WOODEN;
+	}
+
+	private boolean isOnMove(Field source) {
+		if (source == null) {
+			return false;
+		}
+
+		if (source.getFigure() == null)
+			return false;
+
+		return onMove == source.getFigure().getColor();
+	}
+
+	private void highlight(boolean highlighted) {
+		for (Field f : possibleMoves)
+			f.highlight(!highlighted);
+	}
+
+	private void capture() {
+		for (Field f : myPosition.getFigure().getCaptured()) {
+			f.setFigure(null);
+			f.setIcon(null);
 		}
 	}
-	
-	private void doMove(Field source, Field dest) {
-		Figure temp = source.getFigure();
-		Icon tempIcon = source.getIcon();		
-		source.setFigure(null);
-		source.setIcon(null);
-		dest.setFigure(temp);			
+
+	private void changePosition(Field dest) {
+		Figure temp = myPosition.getFigure();
+		Icon tempIcon = myPosition.getIcon();
+		myPosition.setFigure(null);
+		myPosition.setIcon(null);
+		dest.setFigure(temp);
 		dest.setIcon(tempIcon);
+		myPosition = dest;
 	}
-	
-	private void move(Field dest) {
-		if (dest.getFigure() == null) {
-			if (possibleMoves.contains(dest)) {
-				doMove(source, dest);
-			}
+
+	private boolean isPromotion(Field dest) {
+		if (dest.getXX() == TOP || dest.getXX() == NUM_FIELDS - 1) {
+			return true;
+		}
+		return false;
+	}
+
+	private void doPercussiveMove(Field dest) {
+		if (possibleMoves.indexOf(dest) > 0) {
+			return;
+		}
+		changePosition(dest);		
+		dest.highlight(true);
+		possibleMoves.remove(dest);
+		if (possibleMoves.isEmpty()) {
+			percussive = false;
+			capture();
+			nextOnMove();
+			if (isPromotion(myPosition))
+				doPromotion();
+		}
+	}
+
+	private void doQuietMove(Field dest) {
+		changePosition(dest);		
+		highlight(false);
+		possibleMoves.clear();
+		nextOnMove();
+		if (isPromotion(myPosition))
+			doPromotion();
+	}
+
+	private void doMove(Field dest) {
+		if (percussive) {
+			doPercussiveMove(dest);
 		} else {
-			source = dest;
-			possibleMoves = this.source.getFigure().getMoves(this.source, board);
-		}		
+			doQuietMove(dest);
+		}
 	}
-	
+
+	private void fetchInfo(Field dest) {
+		myPosition = dest;
+		possibleMoves = myPosition.getFigure().getMoves(myPosition);
+		percussive = myPosition.getFigure().isPercurssiveMove();
+	}
+
+	private void move(Field dest) {
+		Figure temp = dest.getFigure();
+		if ((temp == null)) {
+			if (possibleMoves.contains(dest)) {
+				doMove(dest);
+			}
+		} else if (!percussive && isOnMove(dest)) {
+			highlight(false);
+			fetchInfo(dest);
+			highlight(true);
+		}
+	}
+
+	private Figure getFigure(int x, int y) {
+		if (isIn(x, y))
+			return board[x][y].getFigure();
+
+		return null;
+	}
+
+	public boolean isIn(int x, int y) {
+		return (x >= TOP) && (x < NUM_FIELDS) && (y >= TOP) && (y < NUM_FIELDS);
+	}
+
+	public Field getField(int x, int y) {
+		if (isIn(x, y))
+			return board[x][y];
+		else
+			return board[0][0];
+	}
+
+	public boolean isFigureNull(int x, int y) {
+		if (isIn(x, y))
+			return board[x][y].getFigure() == null;
+
+		return false;
+	}
+
+	public boolean isEnemy(int x, int y, int x1, int y1) {
+		if (isIn(x, y) && isIn(x1, y1)) {
+			if (!isFigureNull(x, y) && !isFigureNull(x1, y1))
+				return getFigure(x, y).getColor() != getFigure(x1, y1).getColor();
+		}
+
+		return false;
+	}
+
 	MouseAdapter listener = new MouseAdapter() {
 		@Override
-		public void mouseClicked(MouseEvent e) {							
-			move((Field)e.getSource());			
+		public void mouseClicked(MouseEvent e) {
+			move((Field) e.getSource());
 		}
 	};
 }

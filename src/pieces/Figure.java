@@ -18,7 +18,7 @@ public abstract class Figure {
 		this.icon = icon;
 		this.color = color;		
 		this.moves = new ArrayList<>();
-	}
+	}	
 	
 	public abstract List<Field> getMoves(Field source, Field[][] fields);
 
