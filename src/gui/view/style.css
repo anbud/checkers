@@ -1,0 +1,205 @@
+@font-face {
+	src: url('font/Roboto-Regular.ttf');
+}
+
+@font-face {
+	src: url('font/Roboto-Bold.ttf');
+}
+
+@font-face {
+	src: url('font/Roboto-BoldItalic.ttf');
+}
+
+@font-face {
+	src: url('font/Roboto-Italic.ttf');
+}
+
+@font-face {
+	src: url('font/Roboto-Medium.ttf');
+}
+
+@font-face {
+	src: url('font/Roboto-MediumItalic.ttf');
+}
+
+@font-face {
+	src: url('font/Roboto-Light.ttf');
+}
+
+@font-face {
+	src: url('font/Roboto-LightItalic.ttf');
+}
+
+* {
+	-fx-font-family: 'Roboto';
+	-fx-focus-color: -fx-control-inner-background;
+	-fx-faint-focus-color: -fx-control-inner-background;
+}
+
+.background {
+	-fx-background-color: #EEEEEE;
+}
+
+.login {
+	-fx-background-color: #FFFFFF;
+	-fx-border-color: #E5E5E5;
+	-fx-border-width: 1px;
+	-fx-border-radius: 3px;
+	-fx-background-radius: 3px;
+}
+
+.login-overlay {
+	-fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
+.login-error {
+	-fx-font-size: 13px;
+	-fx-text-fill: red;
+	-fx-font-style: italic;
+}
+
+.login-title {
+	-fx-font-size: 16px;
+	-fx-text-fill: #000000;
+}
+
+.text-input {
+	-fx-background-color: #FFFFFF;
+	-fx-border-color: #E5E5E5;
+	-fx-border-width: 1px;
+	-fx-border-radius: 3px;
+	-fx-background-radius: 3px;
+	-fx-font-size: 15px
+}
+
+/*.text-input:focused {
+	-fx-border-color: #106CC8;
+}*/
+
+.button-blue {
+	-fx-background-color: #106CC8;
+	-fx-background-radius: 3px;
+	-fx-border-width: 0;
+	-fx-text-fill: #FFFFFF;
+	-fx-font-size: 15px;
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0, 0, 2);
+}
+
+.white-background {
+	-fx-background-color: #FFFFFF;
+}
+
+.box-header {
+	-fx-background-color: #106CC8;
+}
+
+.box-body {
+	-fx-background-color: #FFFFFF;
+	-fx-border-width: 1px;
+	-fx-border-color: #E5E5E5;
+}
+
+.header-text {
+	-fx-text-fill: #FFFFFF;
+	-fx-font-size: 20px;
+}
+
+.chat-input {
+	-fx-background-color: #FFFFFF;
+	-fx-border-color: #E5E5E5;
+	-fx-border-width: 1px 0 0 0;
+	-fx-border-radius: 0;
+	-fx-background-radius: 0;
+	-fx-font-size: 13px
+}
+
+.chat-input:focused {
+	-fx-border-color: #E5E5E5;
+}
+
+.chat-list {
+	-fx-background-insets: 0;
+}
+
+
+.game-player-icon {
+	-fx-background-radius: 50%;
+	-fx-font-size: 25px;
+	-fx-font-weight: bold;
+	-fx-border-width: 1px;
+	-fx-border-color: #000000;
+	-fx-border-radius: 50%;
+}
+
+.game-player-white {
+	-fx-background-color: #FFFFFF;
+	-fx-text-fill: #000000;
+}
+
+.game-player-black {
+	-fx-background-color: #000000;
+	-fx-text-fill: #FFFFFF;
+}
+
+.game-player-label {
+	-fx-font-size: 25px;
+}
+
+.game-player-box {
+	
+}
+
+.game-player-turn {
+	/*-fx-background-color: #77FF77;
+	-fx-background-radius: 3px;*/
+	-fx-border-width: 2px;
+	-fx-border-color: #77FF77;
+}
+
+.game-board {
+	
+}
+
+.button-hov {
+	-fx-background-color: transparent;
+	-fx-background-radius: 3px;
+	-fx-brder-width: 0;
+	-fx-text-fill: #FFFFFF;
+	-fx-font-size: 15px;
+}
+
+.button-hov:hover {
+	-fx-background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.split-pane-divider {
+	-fx-background-color: #E5E5E5;
+	-fx-padding: 0 1 0 1;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, transparent 0%, transparent 40%, #CCCCCC 50%, transparent 60%, transparent 100%);
+}
+
+
+.scroll-bar .track {
+	-fx-background-color: #FFFFFF;
+}
+
+.scroll-bar .thumb {
+	-fx-background-color: #555555;
+	-fx-border-width: 0;
+	-fx-background-radius: 4px;
+	-fx-background-insets: 0;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+	-fx-padding: 0 8 0 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+	-fx-shape: " ";
+    -fx-padding: 0;
+}
+
+
