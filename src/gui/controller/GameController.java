@@ -2,7 +2,9 @@ package gui.controller;
 
 import gui.Action;
 import gui.Gui;
-import gui.Piece;
+import gui.Figure;
+import java.util.EnumMap;
+import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -13,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -39,12 +42,12 @@ public class GameController {
 	private FlowPane gameBoardHolder;
 	
 	@FXML
+	private Label gameInfo;
+	
+	@FXML
 	private AnchorPane animationHolder;
 	
 	private FlowPane[][] board = new FlowPane[10][10];
-	
-	private String blackPiece = Gui.class.getResource("view/img/red_piece_65.png").toExternalForm();
-	private String whitePiece = Gui.class.getResource("view/img/wooden_piece_65.png").toExternalForm();
 	
 	private Action chatSendHandler;
 	private Action leaveGameHandler;
@@ -68,6 +71,7 @@ public class GameController {
 				else
 					board[i][j].setStyle("-fx-background-color: #272625;");
 				
+                                board[i][j].setMinSize( 0, 0 );
 				board[i][j].setPrefHeight( fieldSize );
 				board[i][j].setPrefWidth( fieldSize );
 				
@@ -102,7 +106,8 @@ public class GameController {
 		gameBoardHolder.heightProperty().addListener(boardSizeListener);
 	}
 	
-	public void chatSendAction(ActionEvent event) {
+        @FXML
+	private void chatSendAction(ActionEvent event) {
 		if(chatSendHandler == null)
 			return;
 		
@@ -111,7 +116,8 @@ public class GameController {
 		});
 	}
 	
-	public void leaveGameAction(ActionEvent event) {
+        @FXML
+	private void leaveGameAction(ActionEvent event) {
 		if(leaveGameHandler == null)
 			return;
 		
@@ -168,31 +174,25 @@ public class GameController {
 		chatList.scrollTo(chatList.getItems().size());
 	}
 	
-	public void setPiece(int x, int y, Piece piece) {
-		board[x][y].getChildren().clear();
-		
-		if(piece != Piece.NONE) {
-			String loc = "";
-			if(piece == Piece.WHITE)
-				loc = whitePiece;
-			else if(piece == Piece.BLACK)
-				loc = blackPiece;
-			
-			double size = Math.floor( gameBoard.getWidth()/10 ) * 0.8;
-			
-			ImageView image = new ImageView(loc);
-			image.setFitHeight(size);
-			image.setFitWidth(size);
-			
-			board[x][y].getChildren().add(image);
+	public void setFigure(int x, int y, Figure figure) {
+		if(figure == Figure.NONE) {
+			board[x][y].getChildren().clear();
+			return;
 		}
+		
+		double size = Math.floor( gameBoard.getWidth()/10 ) * 0.8;
+			
+		ImageView image = new ImageView( Gui.class.getResource(figure.file).toExternalForm() );
+		image.setFitHeight(size);
+		image.setFitWidth(size);		
+        board[x][y].getChildren().add(image);
 	}
 	
-	public void movePiece(int srcx, int srcy, int destx, int desty) {
-		this.movePiece(srcx, srcy, destx, desty, null);
+	public void moveFigure(int srcx, int srcy, int destx, int desty) {
+		this.moveFigure(srcx, srcy, destx, desty, null);
 	}
 	
-	public void movePiece(int srcx, int srcy, int destx, int desty, Action callback) {
+	public void moveFigure(int srcx, int srcy, int destx, int desty, Action callback) {
 		if(board[srcx][srcy].getChildren().isEmpty())
 			return;
 		
@@ -205,12 +205,20 @@ public class GameController {
 		board[srcx][srcy].getChildren().clear();
 		animationHolder.getChildren().add(piece);
 		piece.relocate(src.getMinX() + imgb.getMinX(), src.getMinY() + imgb.getMinY());
+                
+		double dur = 400;
 		
 		Timeline timeline = new Timeline();
 		timeline.setCycleCount(1);
 		timeline.setAutoReverse(false);
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000), new KeyValue(piece.layoutXProperty(), dest.getMinX() + imgb.getMinX())));
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(1000), new KeyValue(piece.layoutYProperty(), dest.getMinY() + imgb.getMinY())));
+		timeline.getKeyFrames().add(
+				new KeyFrame(
+						Duration.millis(dur),
+						new KeyValue(piece.layoutXProperty(), dest.getMinX() + imgb.getMinX())));
+		timeline.getKeyFrames().add(
+				new KeyFrame(
+						Duration.millis(dur),
+						new KeyValue(piece.layoutYProperty(), dest.getMinY() + imgb.getMinY())));
 		
 		timeline.setOnFinished((e) -> {
 			animationHolder.getChildren().remove(piece);
@@ -223,6 +231,10 @@ public class GameController {
 		});
 		
 		timeline.play();
+	}
+	
+	public void setGameInfo(String info) {
+		gameInfo.setText(info);
 	}
 	
 }

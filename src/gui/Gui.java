@@ -159,12 +159,12 @@ public class Gui extends Application {
 		GameController c = gui.loadGameView();
 		
 		// stavi crnu stvarcicu u polje 1,1
-		c.setPiece(1, 1, Piece.BLACK);
+		c.setFigure(1, 1, Figure.BLACK_QUEEN);
 		
 		// callback za "LEAVE GAME" dugme
 		c.onLeaveButton(() -> {
 			// animacija koraka, (1,1) -> (4,5), + callback (for fun)
-			c.movePiece(1, 1, 4, 5, () -> System.out.println("moved"));
+			c.moveFigure(1, 1, 4, 5, () -> System.out.println("moved"));
 		});
 		
 		// callback za poslatu poruku (dugme ili Enter)
@@ -173,6 +173,8 @@ public class Gui extends Application {
 			c.addChatMessage("vsakos", c.getChatInput());
 			c.setChatInput("");
 		});
+		
+		c.setGameInfo("Asd poi");
 	}
 
 }
