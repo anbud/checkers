@@ -1,6 +1,6 @@
 package gui;
 
-public enum Figure {
+public enum GuiFigure {
 	WHITE("view/img/wooden_piece.png"),
 	WHITE_QUEEN("view/img/queen_wooden_piece.png"),
 	BLACK("view/img/red_piece.png"),
@@ -9,7 +9,7 @@ public enum Figure {
 	
 	public String file;
 	
-	Figure(String file) {
+	GuiFigure(String file) {
 		this.file = file;
 	}
 }

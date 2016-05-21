@@ -3,15 +3,13 @@ package figures;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
 import checkersBoard.Board;
 import checkersBoard.Field;
+import javafx.scene.image.Image;
 
 public abstract class Figure {
 
-	protected Icon icon;
+	protected Image icon;
 	protected FigureColor color;
 	
 	protected Board board;
@@ -20,7 +18,7 @@ public abstract class Figure {
 	protected List<Field> quietMoves;	
 	protected List<Field> percussiveMoves;
 	
-	public Figure(Icon icon, FigureColor color, Board board) {
+	public Figure(Image icon, FigureColor color, Board board) {
 		this.icon = icon;
 		this.color = color;				
 		this.quietMoves = new LinkedList<>();
@@ -32,11 +30,11 @@ public abstract class Figure {
 	
 	public abstract List<Field> getMoves(Field source);
 
-	public final Icon getIcon() {
+	public final Image getIcon() {
 		return icon;
 	}
 
-	public final void setIcon(ImageIcon icon) {
+	public final void setIcon(Image icon) {
 		this.icon = icon;
 	}
 

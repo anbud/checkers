@@ -1,9 +1,10 @@
 package gui.controller;
 
+import checkersBoard.Board;
 import gui.Action;
 import gui.ActionXY;
 import gui.Gui;
-import gui.Figure;
+import gui.GuiFigure;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -35,7 +36,7 @@ public class GameController {
 	private TextField chatInput;
 	
 	@FXML
-	private TilePane gameBoard;
+	private Board gameBoard;
 	
 	@FXML
 	private FlowPane gameBoardHolder;
@@ -47,6 +48,8 @@ public class GameController {
 	private AnchorPane animationHolder;
 	
 	private FlowPane[][] board = new FlowPane[10][10];
+	
+	
 	
 	private Action chatSendHandler;
 	private Action leaveGameHandler;
@@ -60,9 +63,10 @@ public class GameController {
 			}
 		});
 		
+		
 		double fieldSize = Math.floor( gameBoard.getWidth() / 10 );
 		
-		for(int i = 0; i < 10; i++) {
+		/*for(int i = 0; i < 10; i++) {
 			for(int j = 0; j < 10; j++) {
 				board[i][j] = new FlowPane();
 				
@@ -79,7 +83,7 @@ public class GameController {
 					});
 				}
 				
-                                board[i][j].setMinSize( 0, 0 );
+                board[i][j].setMinSize( 0, 0 );
 				board[i][j].setPrefHeight( fieldSize );
 				board[i][j].setPrefWidth( fieldSize );
 				
@@ -87,17 +91,17 @@ public class GameController {
 				
 				gameBoard.getChildren().add(board[i][j]);
 			}
-		}
+		}*/
 		
 		ChangeListener<Number> boardSizeListener = (observer, oldval, newval) -> {
 			double size = Math.min( gameBoardHolder.getWidth() , gameBoardHolder.getHeight() );
+			double width = Math.floor( size / 10 ) - 1;
 			
-			gameBoard.setPrefHeight( size );
-			gameBoard.setPrefWidth( size );
+			gameBoard.setPrefHeight( width * 10 + 10 );
+			gameBoard.setPrefWidth( width * 10 + 10 );
 			
 			for(Node node : gameBoard.getChildren()) {
 				FlowPane pane = (FlowPane) node;
-				double width = Math.floor( size / 10 );
 				
 				pane.setPrefWidth( width );
 				pane.setPrefHeight( width );
@@ -186,8 +190,8 @@ public class GameController {
 		chatList.scrollTo(chatList.getItems().size());
 	}
 	
-	public void setFigure(int x, int y, Figure figure) {
-		if(figure == Figure.NONE) {
+	public void setFigure(int x, int y, GuiFigure figure) {
+		if(figure == GuiFigure.NONE) {
 			board[x][y].getChildren().clear();
 			return;
 		}

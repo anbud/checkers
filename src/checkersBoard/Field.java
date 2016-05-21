@@ -1,39 +1,35 @@
 package checkersBoard;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
 import figures.Figure;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 
 @SuppressWarnings("serial")
-public class Field extends JPanel {
+public class Field extends FlowPane {
 	
 	private FieldColor color;
 	private Figure figure;
-	private JLabel label;
+	private ImageView label;
 	private int x;
 	private int y;
 	private boolean visited;
 	
-	public Field(FieldColor color, Figure figure, int x, int y) {
+	public Field(FieldColor color, Figure figure, int x, int y, double size) {
 		this.color = color;
 		this.figure = figure;
 		this.x = x;
 		this.y = y;
 		this.visited = false;
-		setLayout(new BorderLayout());
-		setBackground(color.getColor());
-		label = new JLabel();
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		add(label);
+		setStyle("-fx-background-color: "+color.getColor());
+		
+		label = new ImageView();
+		label.setFitHeight(size);
+		label.setFitWidth(size);
+		
+		getChildren().add(label);
 		if (figure != null) {			
-			label.setIcon(figure.getIcon());						
+			label.setImage(figure.getIcon());
 		}		
 	}
 
@@ -53,12 +49,12 @@ public class Field extends JPanel {
 		this.figure = figure;
 	}	
 	
-	public Icon getIcon() {
-		return label.getIcon();
+	public Image getIcon() {
+		return label.getImage();
 	}
 	
-	public void setIcon(Icon icon) {
-		label.setIcon(icon);
+	public void setIcon(Image icon) {
+		label.setImage(icon);
 	}
 	
 	public int getXX() {
@@ -79,9 +75,9 @@ public class Field extends JPanel {
 	
 	public void highlight(boolean selected) {
 		if (selected) {			
-			setBorder(null);						
+			setStyle("-fx-border-width: 0; -fx-background-color: "+color.getColor());
 		} else {
-			setBorder(BorderFactory.createLineBorder(Color.magenta, 2));
+			setStyle("-fx-border-width: 2px; -fx-border-color: magenta;; -fx-background-color: "+color.getColor());
 		}
 	}
 
