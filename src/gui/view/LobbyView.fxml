@@ -8,12 +8,17 @@
 
 <StackPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.LobbyController">
    <children>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" visible="false" />
-      <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="login-overlay">
+      <SplitPane dividerPositions="0.29797979797979796" prefHeight="160.0" prefWidth="200.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" />
+        </items>
+      </SplitPane>
+      <FlowPane fx:id="login" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="login-overlay">
          <children>
             <AnchorPane prefHeight="190.0" prefWidth="350.0" styleClass="login">
                <children>
-                  <TextField fx:id="loginUsername" alignment="CENTER" promptText="Username" styleClass="text-input" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="70.0" />
+                  <TextField fx:id="loginUsername" alignment="CENTER" onAction="#loginButtonAction" promptText="Username" styleClass="text-input" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="70.0" />
                   <Label styleClass="login-title" text="Type in your name." AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="25.0" />
                   <Button fx:id="loginButton" alignment="CENTER" contentDisplay="CENTER" minWidth="100.0" mnemonicParsing="false" onAction="#loginButtonAction" styleClass="button-blue" text="LOGIN" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0">
                      <padding>

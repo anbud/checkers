@@ -1,6 +1,7 @@
 package gui.controller;
 
 import gui.Action;
+import gui.ActionXY;
 import gui.Gui;
 import gui.Figure;
 import java.util.EnumMap;
@@ -51,6 +52,7 @@ public class GameController {
 	
 	private Action chatSendHandler;
 	private Action leaveGameHandler;
+	private ActionXY fieldClickHandler;
 	
 	@FXML
 	private void initialize() {	
@@ -68,8 +70,16 @@ public class GameController {
 				
 				if((i + j) % 2 == 0)
 					board[i][j].setStyle("-fx-background-color: #f4f4f4;");
-				else
+				else {
 					board[i][j].setStyle("-fx-background-color: #272625;");
+					
+					final int x = i, y = j;
+					
+					board[i][j].setOnMouseClicked((e) -> {
+						if(fieldClickHandler != null)
+							fieldClickHandler.handle(x, y);
+					});
+				}
 				
                                 board[i][j].setMinSize( 0, 0 );
 				board[i][j].setPrefHeight( fieldSize );
@@ -106,7 +116,7 @@ public class GameController {
 		gameBoardHolder.heightProperty().addListener(boardSizeListener);
 	}
 	
-        @FXML
+	@FXML
 	private void chatSendAction(ActionEvent event) {
 		if(chatSendHandler == null)
 			return;
@@ -116,7 +126,7 @@ public class GameController {
 		});
 	}
 	
-        @FXML
+	@FXML
 	private void leaveGameAction(ActionEvent event) {
 		if(leaveGameHandler == null)
 			return;
@@ -140,6 +150,10 @@ public class GameController {
 	
 	public void onLeaveButton(Action action) {
 		leaveGameHandler = action;
+	}
+	
+	public void onFieldClick(ActionXY action) {
+		fieldClickHandler = action;
 	}
 	
 	public void addChatMessage(String username, String message) {

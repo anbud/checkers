@@ -20,7 +20,7 @@ public class Gui extends Application {
 	private Stage stage;
 	
 	private Node lobbyView;
-	private Node gameView;
+	private LobbyController lobbyController;
 	
 	private static Action onInitHandler;
 	private static Action onStartHandler;
@@ -105,11 +105,9 @@ public class Gui extends Application {
 	
 	private void preloadViews() {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("view/GameView.fxml"));
-			gameView = loader.load();
-			
-			loader = new FXMLLoader(getClass().getResource("view/LobbyView.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("view/LobbyView.fxml"));
 			lobbyView = loader.load();
+			lobbyController = (LobbyController) loader.getController();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -122,16 +120,17 @@ public class Gui extends Application {
 	
 	public LobbyController loadLobbyView(boolean login) {
 		Platform.runLater(() -> {
+			lobbyController.setLoginVisible(login);
 			stage.getScene().setRoot((Parent) lobbyView);
 		});
-		return null;
+		return lobbyController;
 	}
 	
 	public GameController loadGameView() {
 		GameController ret = null;
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("view/GameView.fxml"));
-			gameView = loader.load();
+			Node gameView = loader.load();
 			ret = (GameController) loader.getController();
 			
 			Platform.runLater(() -> {
@@ -155,6 +154,13 @@ public class Gui extends Application {
 		// instanca Gui
 		Gui gui = Gui.getInstance();
 		
+		LobbyController c = gui.loadLobbyView(true);
+		
+		c.onLoginButton(() -> {
+			System.out.println("login");
+		});
+		
+		/*
 		// otvaranje GameView-a, vraca controller za taj view
 		GameController c = gui.loadGameView();
 		
@@ -174,7 +180,13 @@ public class Gui extends Application {
 			c.setChatInput("");
 		});
 		
+		c.onFieldClick((x,y) -> {
+			System.out.println(x + " " + y);
+		});
+		
 		c.setGameInfo("Asd poi");
+
+		*/
 	}
 
 }
