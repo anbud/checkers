@@ -84,6 +84,14 @@ public class LobbyController {
 		login.setVisible(visible);
 	}
 	
+	public void setChatInput(String text) {
+		chatInput.setText(text);
+	}
+	
+	public String getChatInput() {
+		return chatInput.getText();
+	}
+	
 	public void addChatMessage(String username, String message) {
 		TextFlow flow = new TextFlow();
 		
