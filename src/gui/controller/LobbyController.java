@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
 public class LobbyController {
@@ -80,6 +82,38 @@ public class LobbyController {
 	
 	public void setLoginVisible(boolean visible) {
 		login.setVisible(visible);
+	}
+	
+	public void addChatMessage(String username, String message) {
+		TextFlow flow = new TextFlow();
+		
+		Text text = new Text(username);
+		text.setStyle("-fx-font-weight: bold;");
+		flow.getChildren().add(text);
+		
+		text = new Text(":\n"+message);
+		flow.getChildren().add(text);
+		
+		flow.setMaxWidth(chatList.getWidth() - 40);
+		
+		chatList.getItems().add(flow);
+		
+		chatList.scrollTo(chatList.getItems().size());
+	}
+	
+	public void addChatInfo(String message) {
+		TextFlow flow = new TextFlow();
+		
+		Text text = new Text(message);
+		text.setStyle("-fx-font-style: italic;");
+		flow.getChildren().add(text);
+		
+		flow.setMaxWidth(chatList.getWidth() - 40);
+		flow.setTextAlignment(TextAlignment.CENTER);
+		
+		chatList.getItems().add(flow);
+		
+		chatList.scrollTo(chatList.getItems().size());
 	}
 	
 }

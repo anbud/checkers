@@ -157,7 +157,7 @@ public class Gui extends Application {
 		LobbyController c = gui.loadLobbyView(true);
 		
 		c.onLoginButton(() -> {
-			System.out.println("login");
+			c.setLoginVisible(false);
 		});
 		
 		/*
