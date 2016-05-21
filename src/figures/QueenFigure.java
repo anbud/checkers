@@ -6,10 +6,11 @@ import javax.swing.Icon;
 
 import checkersBoard.Board;
 import checkersBoard.Field;
+import javafx.scene.image.Image;
 
 public class QueenFigure extends Figure {
 
-	public QueenFigure(Icon icon, FigureColor color, Board board) {
+	public QueenFigure(Image icon, FigureColor color, Board board) {
 		super(icon, color, board);
 	}
 

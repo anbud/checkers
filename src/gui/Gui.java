@@ -4,6 +4,8 @@ import java.util.concurrent.CountDownLatch;
 
 import gui.controller.GameController;
 import gui.controller.LobbyController;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -154,18 +156,20 @@ public class Gui extends Application {
 		// instanca Gui
 		Gui gui = Gui.getInstance();
 		
-		LobbyController c = gui.loadLobbyView(true);
+		LobbyController c = gui.loadLobbyView(false);
 		
-		c.onLoginButton(() -> {
-			c.setLoginVisible(false);
-		});
+		List<String> a = new ArrayList<>();
+		a.add("a");
+		a.add("b");
+		
+		c.setPlayers(a);
 		
 		/*
 		// otvaranje GameView-a, vraca controller za taj view
 		GameController c = gui.loadGameView();
 		
 		// stavi crnu stvarcicu u polje 1,1
-		c.setFigure(1, 1, Figure.BLACK_QUEEN);
+		//c.setFigure(1, 1, Figure.BLACK_QUEEN);
 		
 		// callback za "LEAVE GAME" dugme
 		c.onLeaveButton(() -> {
@@ -185,7 +189,6 @@ public class Gui extends Application {
 		});
 		
 		c.setGameInfo("Asd poi");
-
 		*/
 	}
 

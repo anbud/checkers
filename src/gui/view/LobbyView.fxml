@@ -9,7 +9,7 @@
 
 <StackPane prefHeight="600.0" prefWidth="900.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.LobbyController">
    <children>
-      <SplitPane dividerPositions="0.33, 0.66" prefHeight="160.0" prefWidth="200.0">
+      <SplitPane dividerPositions="0.33, 0.67" prefHeight="160.0" prefWidth="200.0">
         <items>
             <AnchorPane>
                <children>
@@ -20,35 +20,43 @@
                               <Label layoutX="14.0" layoutY="17.0" styleClass="header-text" text="Active games" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
-                        <Button mnemonicParsing="false" onAction="#chatSendAction" prefHeight="35.0" prefWidth="30.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <padding>
-                              <Insets bottom="-2.0" left="-2.0" right="-2.0" top="-2.0" />
-                           </padding>
-                        </Button>
-                        <ListView fx:id="gameList" styleClass="chat-list" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                        <ListView fx:id="gameList" styleClass="chat-list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                      </children>
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane>
-               <children>
-                  <AnchorPane styleClass="box-body" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <SplitPane dividerPositions="0.7" orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" SplitPane.resizableWithParent="false">
+              <items>
+                  <AnchorPane>
                      <children>
-                        <AnchorPane prefHeight="50.0" styleClass="box-header" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane styleClass="box-body" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="17.0" styleClass="header-text" text="Players" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane prefHeight="50.0" styleClass="box-header" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="17.0" styleClass="header-text" text="Players" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <ListView fx:id="playerList" styleClass="chat-list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                            </children>
                         </AnchorPane>
-                        <Button mnemonicParsing="false" onAction="#chatSendAction" prefHeight="35.0" prefWidth="30.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                           <padding>
-                              <Insets bottom="-2.0" left="-2.0" right="-2.0" top="-2.0" />
-                           </padding>
-                        </Button>
-                        <ListView fx:id="playerList" styleClass="chat-list" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
                      </children>
                   </AnchorPane>
-               </children>
-            </AnchorPane>
+                  <AnchorPane>
+                     <children>
+                        <AnchorPane styleClass="box-body" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <children>
+                              <AnchorPane prefHeight="50.0" styleClass="box-header" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label layoutX="14.0" layoutY="17.0" styleClass="header-text" text="Game requests" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="0.0" />
+                                 </children>
+                              </AnchorPane>
+                              <ListView fx:id="requestList" styleClass="chat-list" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
             <AnchorPane>
                <children>
                   <AnchorPane styleClass="box-body" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
@@ -82,7 +90,7 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <FlowPane fx:id="login" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="login-overlay">
+      <FlowPane fx:id="login" alignment="CENTER" prefHeight="200.0" prefWidth="200.0" styleClass="login-overlay" visible="false">
          <children>
             <AnchorPane prefHeight="190.0" prefWidth="350.0" styleClass="login">
                <children>

@@ -7,10 +7,11 @@ import javax.swing.Icon;
 
 import checkersBoard.Board;
 import checkersBoard.Field;
+import javafx.scene.image.Image;
 
 public class SimpleFigure extends Figure {
 
-	public SimpleFigure(Icon icon, FigureColor color, Board board) {
+	public SimpleFigure(Image icon, FigureColor color, Board board) {
 		super(icon, color, board);
 	}
 

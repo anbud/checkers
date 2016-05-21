@@ -1,17 +1,16 @@
 package checkersBoard;
 
-import java.awt.Color;
 
 public enum FieldColor {
 	WHITE("#f4f4f4"), BLACK("#272625");
 	
-	Color color;
+	String color;
 	
 	FieldColor(String color) {
-		this.color = Color.decode(color);
+		this.color = color;
 	}
 	
-	public Color getColor() {
+	public String getColor() {
 		return this.color;
 	}
 }

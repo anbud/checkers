@@ -1,14 +1,21 @@
 package gui.controller;
 
 import gui.Action;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -29,6 +36,12 @@ public class LobbyController {
 	
 	@FXML
 	private ListView<TextFlow> chatList;
+	
+	@FXML
+	private ListView<Node> playerList;
+	
+	@FXML
+	private ListView<Node> requestList;
 	
 	@FXML
 	private TextField chatInput;
@@ -122,6 +135,33 @@ public class LobbyController {
 		chatList.getItems().add(flow);
 		
 		chatList.scrollTo(chatList.getItems().size());
+	}
+	
+	public void setPlayers(List<String> players) {
+		List<Node> temp = new ArrayList<>();
+		
+		for(String s : players) {
+			Label name = new Label();
+			name.setText(s);
+			name.getStyleClass().add("request-label");
+			
+			Button button = new Button("request");
+			button.getStyleClass().add("request-button");
+
+			AnchorPane box = new AnchorPane();
+			box.getChildren().add(name);
+			box.getChildren().add(button);
+			
+			AnchorPane.setLeftAnchor(name, 0.0);
+			AnchorPane.setTopAnchor(name, 0.0);
+			AnchorPane.setBottomAnchor(name, 0.0);
+			AnchorPane.setRightAnchor(button, 0.0);
+			
+			temp.add(box);
+		}
+		
+		playerList.getItems().setAll(temp);
+		
 	}
 	
 }
