@@ -4,8 +4,6 @@ import gui.Action;
 import gui.ActionXY;
 import gui.Gui;
 import gui.Figure;
-import java.util.EnumMap;
-import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
