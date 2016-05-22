@@ -84,11 +84,9 @@ public class Gui extends Application {
 	public void start(Stage primaryStage) {
 		stage = primaryStage;
 		
-		//setUserAgentStylesheet(getClass().getResource("view/style.css").toExternalForm());
+		stage.setTitle("Checkers - special thanks to UPS");
 		
-		stage.setTitle("");
-		
-		stage.setScene(new Scene(new AnchorPane(), 900, 600));
+		stage.setScene(new Scene(new AnchorPane(), 900, 690));
 		
 		stage.show();
 		
