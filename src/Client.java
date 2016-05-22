@@ -102,9 +102,7 @@ public class Client {
 			} 
 			else if (line.startsWith("E_INFO")) {
 				String msg = line.substring(line.indexOf(":") + 2);
-				Platform.runLater(() -> 
-					l.addChatInfo(msg.substring(msg.indexOf(":") + 2))
-				);	
+				l.addChatInfo(msg.substring(msg.indexOf(":") + 2));
 			}
 			else if (line.startsWith("E_GAME_REQUEST")) {
 				// FIX - treba lista u LobbyViewu
