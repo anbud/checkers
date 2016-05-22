@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -145,6 +146,16 @@ public class Gui extends Application {
 		
 		return ret;
 	}
+	
+	public void showMessage(String header, String message) {
+		Platform.runLater(() -> {
+			Alert a = new Alert(Alert.AlertType.INFORMATION);
+			a.setContentText(message);
+			a.setHeaderText(header);
+			a.showAndWait();
+		});
+		
+	}
 
 	public static void main(String[] args) {
 		
@@ -156,28 +167,26 @@ public class Gui extends Application {
 		// instanca Gui
 		Gui gui = Gui.getInstance();
 		
-		GameController g = gui.loadGameView();
-		
-		/*LobbyController c = gui.loadLobbyView(false);
+		LobbyController c = gui.loadLobbyView(false);
 		
 		List<String> a = new ArrayList<>();
 		a.add("a");
 		a.add("b");
 		
-		c.setPlayers(a);*/
+		c.setPlayers(a);
+		
+		List<String> b = new ArrayList<>();
+		b.add("asd poi");
+		b.add("123 456");
+		
+		c.setGames(b);
+		
+		gui.showMessage("123","asd");
 		
 		/*
 		// otvaranje GameView-a, vraca controller za taj view
 		GameController c = gui.loadGameView();
 		
-		// stavi crnu stvarcicu u polje 1,1
-		//c.setFigure(1, 1, Figure.BLACK_QUEEN);
-		
-		// callback za "LEAVE GAME" dugme
-		c.onLeaveButton(() -> {
-			// animacija koraka, (1,1) -> (4,5), + callback (for fun)
-			c.moveFigure(1, 1, 4, 5, () -> System.out.println("moved"));
-		});
 		
 		// callback za poslatu poruku (dugme ili Enter)
 		c.onChatButton(() -> {
@@ -185,12 +194,6 @@ public class Gui extends Application {
 			c.addChatMessage("vsakos", c.getChatInput());
 			c.setChatInput("");
 		});
-		
-		c.onFieldClick((x,y) -> {
-			System.out.println(x + " " + y);
-		});
-		
-		c.setGameInfo("Asd poi");
 		*/
 	}
 

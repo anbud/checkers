@@ -6,7 +6,6 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,8 +13,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -42,6 +39,9 @@ public class LobbyController {
 	
 	@FXML
 	private ListView<Node> requestList;
+	
+	@FXML
+	private ListView<Node> gameList;
 	
 	@FXML
 	private TextField chatInput;
@@ -112,7 +112,7 @@ public class LobbyController {
 		text.setStyle("-fx-font-weight: bold;");
 		flow.getChildren().add(text);
 		
-		text = new Text(":\n"+message);
+		text = new Text("\n"+message);
 		flow.getChildren().add(text);
 		
 		flow.setMaxWidth(chatList.getWidth() - 40);
@@ -162,6 +162,35 @@ public class LobbyController {
 		
 		playerList.getItems().setAll(temp);
 		
+	}
+	
+	public void setGames(List<String> games) {
+		List<Node> nodes = new ArrayList<>();
+		
+		for(String g : games) {
+			String[] players = g.split(" ");
+			
+			TextFlow flow = new TextFlow();
+		
+			Text text = new Text(players[0]);
+			text.setStyle("-fx-font-weight: bold;");
+			flow.getChildren().add(text);
+
+			text = new Text(" vs ");
+			flow.getChildren().add(text);
+			
+			text = new Text(players[1]);
+			text.setStyle("-fx-font-weight: bold;");
+			flow.getChildren().add(text);
+			
+			flow.setTextAlignment(TextAlignment.CENTER);
+			
+			flow.setStyle("-fx-font-size: 16px; -fx-padding: 8px 0 8px 0; -fx-border-width: 0 0 1px 0; -fx-border-color: #cccccc;");
+			
+			nodes.add(flow);
+		}
+		
+		gameList.getItems().setAll(nodes);
 	}
 	
 }

@@ -32,8 +32,8 @@
 
 * {
 	-fx-font-family: 'Roboto';
-	-fx-focus-color: -fx-control-inner-background;
-	-fx-faint-focus-color: -fx-control-inner-background;
+	/*-fx-focus-color: -fx-control-inner-background;
+	-fx-faint-focus-color: -fx-control-inner-background;*/
 }
 
 .background {
@@ -121,6 +121,10 @@
 	-fx-background-insets: 0;
 }
 
+.list-cell {
+	-fx-background-color: transparent;
+}
+
 
 .game-player-icon {
 	-fx-background-radius: 50%;
@@ -173,11 +177,16 @@
 }
 
 .request-button {
-	-fx-background-color: transparent;
+	-fx-background-color: rgba(0, 0, 0, 0.1);
 }
 
 .request-button:hover {
 	-fx-background-color: rgba(0, 0, 0, 0.25);
+}
+
+.request-label {
+	-fx-text-fill: #000000;
+	-fx-font-size: 15px;
 }
 
 
