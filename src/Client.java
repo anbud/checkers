@@ -15,17 +15,21 @@ import javafx.application.Platform;
 
 public class Client {
 	
+	private boolean first;
+	
 	private Gui gui;
 	private static PrintWriter out;
 	private BufferedReader in;
 	private GameController c;
 	private LobbyController l;
+	
 	private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<String>();
 	
 	private String username;
 	private String whosOnMove;
 	
 	public Client() {
+		first = true;
 		gui = Gui.getInstance();
 		l = gui.loadLobbyView(true);
 		initialize();
@@ -131,6 +135,10 @@ public class Client {
 			}
 			else if (line.startsWith("E_TURN")) {
 				whosOnMove = line.substring(line.indexOf(":") + 2);
+				if (first) {
+					c.getBoard().whoAmI(whosOnMove.equals(username));
+					first = false;
+				}
 				c.setGameInfo(whosOnMove);
 				if (!whosOnMove.equals(username))
 					c.setBlockBoard(true);
