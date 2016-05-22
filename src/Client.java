@@ -17,7 +17,7 @@ public class Client {
 	
 	private Gui gui;
 	private PrintWriter out;
-	private BufferedReader in;
+	private static BufferedReader in;
 	private GameController c;
 	private LobbyController l;
 	private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<String>();
@@ -104,9 +104,12 @@ public class Client {
 				String msg = line.substring(line.indexOf(":") + 2);
 				l.addChatInfo(msg.substring(msg.indexOf(":") + 2));
 			}
-			else if (line.startsWith("E_GAME_REQUEST")) {
-				// FIX - treba lista u LobbyViewu
-				// l.requestList.add(line.substring(line.indexOf(":") + 2));
+			else if (line.equals("E_REQUESTS")) {
+				LinkedList<String> requests = new LinkedList<>();
+				while (!(line = in.readLine()).equals("E_END")) 
+					requests.add(line);
+				
+				//l.setRequests(requests);
 			}
 			else if (line.startsWith("E_GAME_ACCEPTED")) {
 				// FIX - treba lista u LobbyViewu
@@ -161,7 +164,12 @@ public class Client {
 		});
 		
 		l.onChatButton(() -> {
-			out.println("LOBBYMSG: " + l.getChatInput());
+			
+			if ("".equals(l.getChatInput().trim()))
+				return;
+				
+			out.println("LOBBYMSG: " + l.getChatInput().trim());
+			
 			l.setChatInput("");
 		}); 
 		
@@ -187,7 +195,6 @@ public class Client {
 		
 		Gui.onClose(() -> {
 			thread.interrupt();
-			System.out.println(thread);
 		});
 		new Client();
 	}
