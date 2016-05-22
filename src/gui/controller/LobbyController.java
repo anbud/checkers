@@ -82,23 +82,23 @@ public class LobbyController {
 	}
 	
 	public void setLoginUsername(String username) {
-		loginUsername.setText(username);
+		Platform.runLater(() -> loginUsername.setText(username));
 	}
 	
 	public void setLoginError(String error) {
-		loginError.setText(error);
+		Platform.runLater(() -> loginError.setText(error));
 	}
 	
 	public void setButtonEnabled(boolean enabled) {
-		loginButton.setDisable(!enabled);
+		Platform.runLater(() -> loginButton.setDisable(!enabled));
 	}
 	
 	public void setLoginVisible(boolean visible) {
-		login.setVisible(visible);
+		Platform.runLater(() -> login.setVisible(visible));
 	}
 	
 	public void setChatInput(String text) {
-		chatInput.setText(text);
+		Platform.runLater(() -> chatInput.setText(text));
 	}
 	
 	public String getChatInput() {
@@ -117,9 +117,12 @@ public class LobbyController {
 		
 		flow.setMaxWidth(chatList.getWidth() - 40);
 		
-		chatList.getItems().add(flow);
 		
-		chatList.scrollTo(chatList.getItems().size());
+		Platform.runLater(() -> {
+			chatList.getItems().add(flow);
+		
+			chatList.scrollTo(chatList.getItems().size());
+		});
 	}
 	
 	public void addChatInfo(String message) {
@@ -132,9 +135,11 @@ public class LobbyController {
 		flow.setMaxWidth(chatList.getWidth() - 40);
 		flow.setTextAlignment(TextAlignment.CENTER);
 		
-		chatList.getItems().add(flow);
+		Platform.runLater(() -> {
+			chatList.getItems().add(flow);
 		
-		chatList.scrollTo(chatList.getItems().size());
+			chatList.scrollTo(chatList.getItems().size());
+		});
 	}
 	
 	public void setPlayers(List<String> players) {
@@ -160,7 +165,9 @@ public class LobbyController {
 			temp.add(box);
 		}
 		
-		playerList.getItems().setAll(temp);
+		Platform.runLater(() -> {
+			playerList.getItems().setAll(temp);
+		});
 		
 	}
 	
@@ -189,8 +196,9 @@ public class LobbyController {
 			
 			nodes.add(flow);
 		}
-		
-		gameList.getItems().setAll(nodes);
+		Platform.runLater(() -> {
+			gameList.getItems().setAll(nodes);
+		});
 	}
 	
 }

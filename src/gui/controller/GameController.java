@@ -105,7 +105,7 @@ public class GameController {
 	}
 	
 	public void setChatInput(String text) {
-		chatInput.setText(text);
+		Platform.runLater(() -> chatInput.setText(text));
 	}
 	
 	public String getChatInput() {
@@ -131,14 +131,16 @@ public class GameController {
 		text.setStyle("-fx-font-weight: bold;");
 		flow.getChildren().add(text);
 		
-		text = new Text(":\n"+message);
+		text = new Text("\n"+message);
 		flow.getChildren().add(text);
 		
 		flow.setMaxWidth(chatList.getWidth() - 40);
 		
-		chatList.getItems().add(flow);
-		
-		chatList.scrollTo(chatList.getItems().size());
+		Platform.runLater(() -> {
+			chatList.getItems().add(flow);
+
+			chatList.scrollTo(chatList.getItems().size());
+		});
 	}
 	
 	public void addChatInfo(String message) {
@@ -151,9 +153,11 @@ public class GameController {
 		flow.setMaxWidth(chatList.getWidth() - 40);
 		flow.setTextAlignment(TextAlignment.CENTER);
 		
-		chatList.getItems().add(flow);
-		
-		chatList.scrollTo(chatList.getItems().size());
+		Platform.runLater(() -> {
+			chatList.getItems().add(flow);
+
+			chatList.scrollTo(chatList.getItems().size());
+		});
 	}
 	
 	public void setFigure(int x, int y, GuiFigure figure) {
@@ -216,7 +220,7 @@ public class GameController {
 	}
 	
 	public void setGameInfo(String info) {
-		gameInfo.setText(info + "'s turn");
+		Platform.runLater(() -> gameInfo.setText(info + "'s turn"));
 	}
 	
 }
