@@ -17,6 +17,7 @@
                   <AnchorPane fx:id="animationHolder">
                      <children>
                         <checkersBoard.Board fx:id="gameBoard" alignment="CENTER" minHeight="0.0" minWidth="0.0" prefColumns="10" prefHeight="50.0" prefRows="10" prefWidth="50.0" styleClass="game-board" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <AnchorPane fx:id="glass" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </children>

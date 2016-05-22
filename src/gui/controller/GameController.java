@@ -43,6 +43,9 @@ public class GameController {
 	private Label gameInfo;
 	
 	@FXML
+	private AnchorPane glass;
+	
+	@FXML
 	private AnchorPane animationHolder;
 	
 	private FlowPane[][] board = new FlowPane[10][10];
@@ -228,6 +231,10 @@ public class GameController {
 	
 	public Board getBoard() {
 		return gameBoard;
+	}
+	
+	public void setBlockBoard(boolean block) {
+		Platform.runLater(() -> glass.setVisible(block));
 	}
 	
 }
