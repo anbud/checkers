@@ -52,7 +52,7 @@ public class Client {
 					process(line = in.readLine(), in);
 				
 			} catch (Exception e) {
-				System.out.println("io Exception");
+				e.printStackTrace();
 			}
 			
 		} catch (Exception e) {
@@ -68,7 +68,7 @@ public class Client {
 			else if (line.startsWith("E_LAG")) { }
 			else if (line.startsWith("E_OK")) {
 				queue.add(line);
-				System.out.println(line);
+				//System.out.println(line);
 			}
 			else if (line.equals("E_USERS:")) {
 				LinkedList<String> users = new LinkedList<>();
@@ -78,7 +78,7 @@ public class Client {
 				
 				l.setPlayers(users);
 			}
-			else if (line.equals("E_GAMES:")) {
+			else if (line.startsWith("E_GAMES")) {
 				LinkedList<String> games = new LinkedList<>();
 				while (!(line = in.readLine()).equals("E_END")) 
 					games.add(line);
@@ -118,10 +118,7 @@ public class Client {
 				c = gui.loadGameView();
 				initGameCallbacks();	
 			}
-			else if (line.startsWith("E_GAME_ACCEPTED")) {
-//				c = gui.loadGameView();
-//				initGameCallbacks();
-			}
+			else if (line.startsWith("E_GAME_ACCEPTED")) { }
 			else if (line.startsWith("E_GAME_DECLINED")) {
 				String uname = line.substring(line.indexOf(":") + 2);
 				l.addChatInfo(uname + " rejected challenge.");				
@@ -177,19 +174,12 @@ public class Client {
 			out.println("LOBBYMSG: " + l.getChatInput().trim());
 			
 			l.setChatInput("");
+			try { queue.take(); } catch (Exception e) {}
 		}); 
 		
 		l.onAcceptButton((uname) -> {
 			out.println("GAME ACCEPT: " + uname);
-			
-//			try {
-//				String status = queue.take();
-//				if (status.startsWith("E_OK")) {
-//					c = gui.loadGameView();
-//					initGameCallbacks();
-//				}
-//			} catch (Exception e) { }
-						
+			try { queue.take(); } catch (Exception e) {}
 		});
 		
 		l.onRejectButton((uname) -> {
@@ -199,20 +189,23 @@ public class Client {
 		l.onRequestButton((uname) -> {
 			out.println("GAME REQUEST: " + uname);
 			
-			try {
-				queue.take();
-			} catch (Exception e) {}
+			try { queue.take(); } catch (Exception e) {}
 		});
 		
 	}
 	private void initGameCallbacks() {
 		c.onLeaveButton(() -> {
 			out.println("LEAVE GAME: " + gameId);
+			try { queue.take(); } catch (Exception e) {}
 		}); 
 		
 		c.onChatButton(() -> {
+			if ("".equals(c.getChatInput().trim()))
+				return;
+			
 			out.println("GAMEMSG: " + c.getChatInput());
 			c.setChatInput("");
+			try { queue.take(); } catch (Exception e) {}
 		}); 
 		
 		c.setGameInfo(whosOnMove);
