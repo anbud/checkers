@@ -221,6 +221,7 @@ public class Client {
 			out.println("LEAVE GAME");
 			try { queue.take(); } catch (Exception e) {}
 			c = null;
+			first = true;
 			gui.loadLobbyView();
 		}); 
 		
