@@ -33,8 +33,7 @@ public class Board extends TilePane {
 	private boolean check;
 	private FigureColor onMove;
 	private int queenNumMoves;
-	private BiConsumer<Field,Field> moveHandler;
-	private Consumer<Field> captureHandler;
+	private Consumer<Field> moveHandler;
 	private Action turnHandler;
 	private Action drawHandler;
 	private Action winHandler;
@@ -47,12 +46,8 @@ public class Board extends TilePane {
 		setStyle("-fx-border-width: 5px; -fx-border-color: #106CC8");
 	}
 	
-	public void onMove(BiConsumer<Field,Field> action) {
+	public void onMove(Consumer<Field> action) {
 		moveHandler = action;
-	}
-	
-	public void onCapture(Consumer<Field> action) {
-		captureHandler = action;
 	}
 	
 	public void onWin(Action action) {
@@ -95,6 +90,8 @@ public class Board extends TilePane {
 					board[i][j] = new Field(FieldColor.BLACK, figure, i, j, size*0.8);
 					board[i][j].setOnMouseClicked((e) -> {
 						move((Field) e.getSource());
+						if(moveHandler != null)
+							moveHandler.accept((Field) e.getSource());
 					});
 				} else {
 					board[i][j] = new Field(FieldColor.WHITE, null, i, j, size*0.8);
@@ -155,10 +152,7 @@ public class Board extends TilePane {
 	}
 
 	private void capture() {
-		for (Field f : myPosition.getFigure().getCaptured()) {
-			if(captureHandler != null)
-				captureHandler.accept(f);
-			
+		for (Field f : myPosition.getFigure().getCaptured()) {		
 			f.setFigure(null);
 			f.setIcon(null);
 		}
@@ -168,10 +162,7 @@ public class Board extends TilePane {
 		myPosition = board[x][y];
 	}
 	
-	public void changePosition(Field dest, boolean callHandler) {
-		if(callHandler && moveHandler != null)
-			moveHandler.accept(myPosition, dest);
-		
+	public void changePosition(Field dest) {	
 		Figure temp = myPosition.getFigure();
 		Image tempIcon = myPosition.getIcon();
 		myPosition.setFigure(null);
@@ -179,10 +170,6 @@ public class Board extends TilePane {
 		dest.setFigure(temp);
 		dest.setIcon(tempIcon);
 		myPosition = dest;
-	}
-
-	public void changePosition(Field dest) {
-		changePosition(dest, true);
 	}
 
 	private boolean isPromotion(Field dest) {
@@ -263,7 +250,7 @@ public class Board extends TilePane {
 		percussive = myPosition.getFigure().isPercurssiveMove();
 	}
 
-	private void move(Field dest) {
+	public void move(Field dest) {
 		Figure temp = dest.getFigure();
 		if (temp == null) {
 			if (moves.contains(dest)) {
