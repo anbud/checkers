@@ -16,7 +16,7 @@ import javafx.application.Platform;
 public class Client {
 	
 	private Gui gui;
-	private PrintWriter out;
+	private static PrintWriter out;
 	private static BufferedReader in;
 	private GameController c;
 	private LobbyController l;
@@ -51,9 +51,11 @@ public class Client {
 				while (!Thread.interrupted())
 					process(line = in.readLine(), in);
 				
-			} catch (Exception e) { }
+			} catch (Exception e) {
+				System.out.println("io Exception");
+			}
 			
-		} catch (IOException e) {
+		} catch (Exception e) {
 			gui.showMessage("Server error", "Server's not up.");
 			Platform.exit();
 		}
@@ -63,7 +65,7 @@ public class Client {
 		try {
 			if (line.startsWith("PING")) 
 				out.println("PONG");
-
+			else if (line.startsWith("E_LAG")) { }
 			else if (line.startsWith("E_OK"))
 				queue.add(line);
 			
@@ -89,7 +91,7 @@ public class Client {
 			else if (line.startsWith("E_LOBBY_MESSAGE")) {
 				String msg = line.substring(line.indexOf(":") + 2);
 				String userSent = msg.substring(0, msg.indexOf(":"));
-				l.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2));
+				l.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2), userSent.equals(username));
 			}
 			else if (line.startsWith("E_LOBBY_INFO")) {
 				String msg = line.substring(line.indexOf(":") + 2);
@@ -98,7 +100,7 @@ public class Client {
 			else if (line.startsWith("E_MESSAGE")) {
 				String msg = line.substring(line.indexOf(":") + 2);
 				String userSent = msg.substring(0, msg.indexOf(":"));
-				c.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2));
+				c.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2), userSent.equals(username));
 			} 
 			else if (line.startsWith("E_INFO")) {
 				String msg = line.substring(line.indexOf(":") + 2);
@@ -109,7 +111,7 @@ public class Client {
 				while (!(line = in.readLine()).equals("E_END")) 
 					requests.add(line);
 				
-				//l.setRequests(requests);
+				l.setRequests(requests);
 			}
 			else if (line.startsWith("E_GAME_ACCEPTED")) {
 				// FIX - treba lista u LobbyViewu
@@ -195,6 +197,7 @@ public class Client {
 		
 		Gui.onClose(() -> {
 			thread.interrupt();
+			out.println("HELP");
 		});
 		new Client();
 	}
