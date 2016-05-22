@@ -17,7 +17,7 @@ public class Client {
 	
 	private Gui gui;
 	private static PrintWriter out;
-	private static BufferedReader in;
+	private BufferedReader in;
 	private GameController c;
 	private LobbyController l;
 	private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<String>();
@@ -66,9 +66,18 @@ public class Client {
 			if (line.startsWith("PING")) 
 				out.println("PONG");
 			else if (line.startsWith("E_LAG")) { }
-			else if (line.startsWith("E_OK")) {
+			else if (line.startsWith("E_OK"))
 				queue.add(line);
-				//System.out.println(line);
+			
+			else if (line.startsWith("E_MOVE")) {
+				String[] moves = line.substring(line.indexOf(":") + 2).split(" ");
+				
+				c.getBoard().move(c.getBoard().getField(Integer.parseInt(moves[0]), Integer.parseInt(moves[1])));
+			}
+			else if (line.startsWith("E_EAT")) {
+				String[] moves = line.substring(line.indexOf(":") + 2).split(" ");
+				
+				c.getBoard().captureOne(Integer.parseInt(moves[0]), Integer.parseInt(moves[1]));
 			}
 			else if (line.equals("E_USERS:")) {
 				LinkedList<String> users = new LinkedList<>();
@@ -84,11 +93,6 @@ public class Client {
 					games.add(line);
 				
 				l.setGames(games);
-			}
-			else if (line.startsWith("E_TURN")) {
-				whosOnMove = line.substring(line.indexOf(":") + 2);
-				System.out.println(whosOnMove);
-				c.setGameInfo(whosOnMove);
 			}
 			else if (line.startsWith("E_LOBBY_MESSAGE")) {
 				String msg = line.substring(line.indexOf(":") + 2);
@@ -119,17 +123,28 @@ public class Client {
 				c = gui.loadGameView();
 				initGameCallbacks();	
 			}
-			else if (line.startsWith("E_GAME_ACCEPTED")) { }
 			else if (line.startsWith("E_GAME_DECLINED")) {
 				String uname = line.substring(line.indexOf(":") + 2);
 				l.addChatInfo(uname + " rejected challenge.");				
 			}
 			else if (line.equals("E_GAME_OVER")) {
-				// treba obraditi slučaj kada je korisnik prekinuo igru - onPlayerLeave()
-				// i kada je igra završena pobjedom nekog od takmičara - checkState())
-				// ili eventualno nerješeno
+				gui.showMessage("", "");
 			}
+			else if (line.startsWith("E_TURN")) {
+				whosOnMove = line.substring(line.indexOf(":") + 2);
+				System.out.println(whosOnMove);
+				c.setGameInfo(whosOnMove);
+			}
+			else if (line.equals("E_WON")) {
+				String winner = line.substring(line.indexOf(":") + 2);
+				gui.showMessage("We have a winner", "User " + winner + " won!");
+			}
+			else if (line.equals("E_DRAW")) {
+				gui.showMessage("It's a draw", "No body wins.");
+			}
+			else if (line.startsWith("E_GAME_ACCEPTED")) { }
 			else if (line.startsWith("E_GAME_REQUEST")) { }
+			else if (line.startsWith("E_MULTIPLE_REQUESTS")) { }
 			else {
 				queue.add(line);
 				System.out.println(line);
@@ -210,7 +225,9 @@ public class Client {
 		
 		c.setGameInfo(whosOnMove);
 		
-		
+		c.getBoard().onMove((src) -> {
+			out.println(String.format("MOVE: %d %d", src.getXX(), src.getYY()));
+		});
 	}
 	
 	public static void main(String[] args) throws IOException {
