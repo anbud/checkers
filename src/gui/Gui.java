@@ -170,8 +170,8 @@ public class Gui extends Application {
 		LobbyController c = gui.loadLobbyView(false);
 		
 		List<String> a = new ArrayList<>();
-		a.add("a");
-		a.add("b");
+		a.add("aaa");
+		a.add("bbb");
 		
 		c.setPlayers(a);
 		
@@ -181,7 +181,12 @@ public class Gui extends Application {
 		
 		c.setGames(b);
 		
-		gui.showMessage("123","asd");
+		//gui.showMessage("123","asd");
+		
+		List<String> d = new ArrayList<>();
+		d.add("asdpoi");
+		
+		c.setRequests(d);
 		
 		/*
 		// otvaranje GameView-a, vraca controller za taj view

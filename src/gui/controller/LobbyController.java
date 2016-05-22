@@ -1,6 +1,7 @@
 package gui.controller;
 
 import gui.Action;
+import gui.Gui;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
@@ -11,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
@@ -198,6 +200,68 @@ public class LobbyController {
 		}
 		Platform.runLater(() -> {
 			gameList.getItems().setAll(nodes);
+		});
+	}
+	
+	public void setRequests(List<String> requests) {
+		List<Node> temp = new ArrayList<>();
+		
+		for(String s : requests) {
+			Label name = new Label();
+			name.setText(s);
+			name.getStyleClass().add("request-label");
+			
+			ImageView acceptImg = new ImageView(Gui.class.getResource("view/img/accept-mark.png").toExternalForm());
+			acceptImg.setFitHeight(20);
+			acceptImg.setFitWidth(20);
+			
+			Button accept = new Button("", acceptImg);
+			accept.getStyleClass().add("request-accept");
+			
+			accept.setOnMouseEntered((e) -> {
+				accept.setScaleX(1.3);
+				accept.setScaleY(1.3);
+			});
+			
+			accept.setOnMouseExited((e) -> {
+				accept.setScaleX(1.0);
+				accept.setScaleY(1.0);
+			});
+			
+			ImageView rejectImg = new ImageView(Gui.class.getResource("view/img/reject-mark.png").toExternalForm());
+			rejectImg.setFitHeight(20);
+			rejectImg.setFitWidth(20);
+			
+			Button reject = new Button("", rejectImg);
+			reject.getStyleClass().add("request-accept");
+			
+			reject.setOnMouseEntered((e) -> {
+				reject.setScaleX(1.3);
+				reject.setScaleY(1.3);
+			});
+			
+			reject.setOnMouseExited((e) -> {
+				reject.setScaleX(1.0);
+				reject.setScaleY(1.0);
+			});
+
+			AnchorPane box = new AnchorPane();
+			box.getChildren().add(name);
+			box.getChildren().add(accept);
+			box.getChildren().add(reject);
+			
+			AnchorPane.setLeftAnchor(name, 0.0);
+			AnchorPane.setTopAnchor(name, 0.0);
+			AnchorPane.setBottomAnchor(name, 0.0);
+			
+			AnchorPane.setRightAnchor(accept, 30.0);
+			AnchorPane.setRightAnchor(reject, 0.0);
+			
+			temp.add(box);
+		}
+		
+		Platform.runLater(() -> {
+			requestList.getItems().setAll(temp);
 		});
 	}
 	

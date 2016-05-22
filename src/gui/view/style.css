@@ -178,6 +178,7 @@
 
 .request-button {
 	-fx-background-color: rgba(0, 0, 0, 0.1);
+	-fx-cursor: hand;
 }
 
 .request-button:hover {
@@ -187,6 +188,12 @@
 .request-label {
 	-fx-text-fill: #000000;
 	-fx-font-size: 15px;
+}
+
+.request-accept {
+	-fx-background-color: transparent;
+	-fx-padding: 4px;
+	-fx-cursor: hand;
 }
 
 
