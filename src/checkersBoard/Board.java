@@ -9,6 +9,7 @@ import figures.Figure;
 import figures.FigureColor;
 import figures.QueenFigure;
 import figures.SimpleFigure;
+import gui.Action;
 import gui.Gui;
 import gui.GuiFigure;
 import java.util.function.BiConsumer;
@@ -34,6 +35,9 @@ public class Board extends TilePane {
 	private int queenNumMoves;
 	private BiConsumer<Field,Field> moveHandler;
 	private Consumer<Field> captureHandler;
+	private Action turnHandler;
+	private Action drawHandler;
+	private Action winHandler;
 
 
 	public Board() {
@@ -49,6 +53,18 @@ public class Board extends TilePane {
 	
 	public void onCapture(Consumer<Field> action) {
 		captureHandler = action;
+	}
+	
+	public void onWin(Action action) {
+		winHandler = action;
+	}
+	
+	public void onDraw(Action action) {
+		drawHandler = action;
+	}
+	
+	public void onTurn(Action action) {
+		turnHandler = action;
 	}
 
 	private void initialize() {
@@ -351,15 +367,14 @@ public class Board extends TilePane {
 	
 	private void checkGame() throws DrawException, LostException {
 		if (isDraw())
-			throw new DrawException();
-
-		if (isLost()) {
-			String message;
-			if (onMove.equals(FigureColor.WOODEN))
-				message = "Red is the winner!";
-			else
-				message = "Wooden is the winner!";
-			throw new LostException(message);
+			if(drawHandler != null)
+				drawHandler.handle();
+		else if (isLost()) {
+			if(winHandler != null)
+				winHandler.handle();
+		}
+		else if(turnHandler != null) {
+			turnHandler.handle();
 		}
 	}
 
