@@ -31,12 +31,12 @@ public class Board extends TilePane {
 	private boolean percussive;
 	private boolean check;
 	private FigureColor onMove;
+	private FigureColor me;
 	private int queenNumMoves;
 	private Consumer<Field> moveHandler;
 	private Action turnHandler;
 	private Action drawHandler;
 	private Action winHandler;
-
 
 	public Board() {
 		initialize();
@@ -59,6 +59,13 @@ public class Board extends TilePane {
 	
 	public void onTurn(Action action) {
 		turnHandler = action;
+	}
+	
+	public void whoAmI(boolean a) {
+		if(a)
+			me = FigureColor.WOODEN;
+		else
+			me = FigureColor.RED;
 	}
 
 	private void initialize() {
@@ -352,6 +359,9 @@ public class Board extends TilePane {
 	}
 	
 	private void checkGame() throws DrawException, LostException {
+		if(me == onMove)
+			return;
+		
 		if (isDraw())
 			System.out.println("draw");
 			if(drawHandler != null)
@@ -361,7 +371,7 @@ public class Board extends TilePane {
 			if(winHandler != null)
 				winHandler.handle();
 		}
-		else if(turnHandler != null && !isOnMove(myPosition)) {
+		else if(turnHandler != null) {
 			turnHandler.handle();
 			System.out.println("turn");
 		}
