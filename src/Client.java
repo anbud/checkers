@@ -137,7 +137,10 @@ public class Client {
 				whosOnMove = line.substring(line.indexOf(":") + 2);
 				if (first) {
 					c.getBoard().whoAmI(whosOnMove.equals(username));
+					if (!whosOnMove.equals(username))
+						c.getBoard().setRotate(180);
 					first = false;
+					
 				}
 				c.setGameInfo(whosOnMove);
 				if (!whosOnMove.equals(username))
