@@ -226,4 +226,8 @@ public class GameController {
 		Platform.runLater(() -> gameInfo.setText(info + "'s turn"));
 	}
 	
+	public Board getBoard() {
+		return gameBoard;
+	}
+	
 }

@@ -11,6 +11,8 @@ import figures.QueenFigure;
 import figures.SimpleFigure;
 import gui.Gui;
 import gui.GuiFigure;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.TilePane;
@@ -30,6 +32,8 @@ public class Board extends TilePane {
 	private boolean check;
 	private FigureColor onMove;
 	private int queenNumMoves;
+	private BiConsumer<Field,Field> moveHandler;
+	private Consumer<Field> captureHandler;
 
 
 	public Board() {
@@ -37,6 +41,14 @@ public class Board extends TilePane {
 		setFigures();
 		
 		setStyle("-fx-border-width: 5px; -fx-border-color: #106CC8");
+	}
+	
+	public void onMove(BiConsumer<Field,Field> action) {
+		moveHandler = action;
+	}
+	
+	public void onCapture(Consumer<Field> action) {
+		captureHandler = action;
 	}
 
 	private void initialize() {
@@ -120,15 +132,30 @@ public class Board extends TilePane {
 		for (Field f : moves)
 			f.highlight(!highlighted);
 	}
+	
+	public void captureOne(int x, int y) {
+		board[x][y].setFigure(null);
+		board[x][y].setIcon(null);
+	}
 
 	private void capture() {
 		for (Field f : myPosition.getFigure().getCaptured()) {
+			if(captureHandler != null)
+				captureHandler.accept(f);
+			
 			f.setFigure(null);
 			f.setIcon(null);
 		}
 	}
-
-	private void changePosition(Field dest) {
+	
+	public void setMyPosition(int x, int y) {
+		myPosition = board[x][y];
+	}
+	
+	public void changePosition(Field dest, boolean callHandler) {
+		if(callHandler && moveHandler != null)
+			moveHandler.accept(myPosition, dest);
+		
 		Figure temp = myPosition.getFigure();
 		Image tempIcon = myPosition.getIcon();
 		myPosition.setFigure(null);
@@ -136,6 +163,10 @@ public class Board extends TilePane {
 		dest.setFigure(temp);
 		dest.setIcon(tempIcon);
 		myPosition = dest;
+	}
+
+	public void changePosition(Field dest) {
+		changePosition(dest, true);
 	}
 
 	private boolean isPromotion(Field dest) {
