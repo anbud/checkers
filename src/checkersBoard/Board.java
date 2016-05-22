@@ -361,7 +361,7 @@ public class Board extends TilePane {
 			if(winHandler != null)
 				winHandler.handle();
 		}
-		else if(turnHandler != null) {
+		else if(turnHandler != null && !isOnMove(myPosition)) {
 			turnHandler.handle();
 			System.out.println("turn");
 		}
