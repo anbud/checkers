@@ -62,6 +62,7 @@ public class Client {
 	}
 
 	private void process(String line, BufferedReader in) {
+		System.out.println(line);
 		try {
 			if (line.startsWith("PING")) 
 				out.println("PONG");
@@ -105,7 +106,7 @@ public class Client {
 			} 
 			else if (line.startsWith("E_INFO")) {
 				String msg = line.substring(line.indexOf(":") + 2);
-				l.addChatInfo(msg.substring(msg.indexOf(":") + 2));
+				c.addChatInfo(msg.substring(msg.indexOf(":") + 2));
 			}
 			else if (line.startsWith("E_REQUESTS")) {
 				LinkedList<String> requests = new LinkedList<>();
@@ -123,9 +124,6 @@ public class Client {
 				String uname = line.substring(line.indexOf(":") + 2);
 				l.addChatInfo(uname + " rejected challenge.");				
 			}
-			else if (line.equals("E_INVALID_MOVE"))
-				l.addChatInfo("It's opponenets move."); // da li može doći do ovoga (kako je logika impl)?
-			
 			else if (line.equals("E_GAME_OVER")) {
 				// treba obraditi slučaj kada je korisnik prekinuo igru - onPlayerLeave()
 				// i kada je igra završena pobjedom nekog od takmičara - checkState())
@@ -195,8 +193,10 @@ public class Client {
 	}
 	private void initGameCallbacks() {
 		c.onLeaveButton(() -> {
-			out.println("LEAVE GAME: " + gameId);
+			out.println("LEAVE GAME");
 			try { queue.take(); } catch (Exception e) {}
+			c = null;
+			gui.loadLobbyView();
 		}); 
 		
 		c.onChatButton(() -> {
@@ -206,7 +206,7 @@ public class Client {
 			out.println("GAMEMSG: " + c.getChatInput());
 			c.setChatInput("");
 			try { queue.take(); } catch (Exception e) {}
-		}); 
+		});
 		
 		c.setGameInfo(whosOnMove);
 	}
