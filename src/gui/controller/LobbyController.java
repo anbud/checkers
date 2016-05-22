@@ -107,7 +107,7 @@ public class LobbyController {
 		return chatInput.getText();
 	}
 	
-	public void addChatMessage(String username, String message) {
+	public void addChatMessage(String username, String message, boolean out) {
 		TextFlow flow = new TextFlow();
 		
 		Text text = new Text(username);
@@ -118,6 +118,9 @@ public class LobbyController {
 		flow.getChildren().add(text);
 		
 		flow.setMaxWidth(chatList.getWidth() - 40);
+		
+		if(out)
+			flow.setTextAlignment(TextAlignment.RIGHT);
 		
 		
 		Platform.runLater(() -> {
