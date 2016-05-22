@@ -89,7 +89,6 @@ public class Client {
 				whosOnMove = line.substring(line.indexOf(":") + 1);
 				c.setGameInfo(whosOnMove);
 			}
-
 			else if (line.startsWith("E_LOBBY_MESSAGE")) {
 				String msg = line.substring(line.indexOf(":") + 2);
 				String userSent = msg.substring(0, msg.indexOf(":"));
@@ -116,13 +115,12 @@ public class Client {
 				l.setRequests(requests);
 			}
 			else if (line.startsWith("E_GAME_ACCEPTED")) {
-				// FIX - treba lista u LobbyViewu
-				// l.getRequestList().remove(line.substring(line.indexOf(":") + 2));
 				c = gui.loadGameView();
 				initGameCallbacks();
 			}
 			else if (line.startsWith("E_GAME_DECLINED")) {
-				//						
+				String uname = line.substring(line.indexOf(":") + 2);
+				l.addChatInfo(uname + " rejected challenge.");				
 			}
 			else if (line.equals("E_INVALID_MOVE"))
 				l.addChatInfo("It's opponenets move."); // da li može doći do ovoga (kako je logika impl)?
@@ -132,6 +130,7 @@ public class Client {
 				// i kada je igra završena pobjedom nekog od takmičara - checkState())
 				// ili eventualno nerješeno
 			}
+			else if (line.startsWith("E_GAME_REQUEST")) { }
 			else {
 				queue.add(line);
 				System.out.println(line);
@@ -168,7 +167,6 @@ public class Client {
 		});
 		
 		l.onChatButton(() -> {
-			
 			if ("".equals(l.getChatInput().trim()))
 				return;
 				
@@ -176,6 +174,31 @@ public class Client {
 			
 			l.setChatInput("");
 		}); 
+		
+		l.onAcceptButton((uname) -> {
+			out.println("GAME ACCEPT: " + uname);
+			
+			try {
+				String status = queue.take();
+				if (status.startsWith("E_OK")) {
+					c = gui.loadGameView();
+					initGameCallbacks();
+				}
+			} catch (Exception e) { }
+						
+		});
+		
+		l.onRejectButton((uname) -> {
+			out.println("GAME DECLINE: " + uname);
+		});
+		
+		l.onRequestButton((uname) -> {
+			out.println("GAME REQUEST: " + uname);
+			
+			try {
+				queue.take();
+			} catch (Exception e) {}
+		});
 		
 	}
 	private void initGameCallbacks() {

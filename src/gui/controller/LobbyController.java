@@ -175,7 +175,6 @@ public class LobbyController {
 			button.getStyleClass().add("request-button");
 			
 			final String ss = s;
-			
 			button.setOnMouseClicked((e) -> {
 				if(requestHandler != null) {
 					requestHandler.accept(ss);
