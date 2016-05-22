@@ -29,7 +29,6 @@ public class Client {
 	public Client() {
 		gui = Gui.getInstance();
 		l = gui.loadLobbyView(true);
-		c = gui.loadGameView();
 		initialize();
 	}
 	
@@ -38,24 +37,24 @@ public class Client {
 		username = "default";
 		whosOnMove = username;
 		
-		//try(Socket client = new Socket("localhost", 1338)) {
-		try(Socket client = new Socket("hekate.zx.rs", 1338)) {
+		//try(Socket client = new Socket("localhost", 110)) {
+		try(Socket client = new Socket("hekate.zx.rs", 110)) {
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(client.getOutputStream(), true);
 			
-			initGameCallbacks();
 			initLobbyCallbacks();
 			
 			try {
 				in.readLine();
 				@SuppressWarnings("unused")
 				String line;
-				while (true)
+				while (!Thread.interrupted())
 					process(line = in.readLine(), in);
 				
 			} catch (Exception e) { }
 			
-		} catch (IOException e) { 
+		} catch (IOException e) {
+			gui.showMessage("Server error", "Server's not up.");
 			Platform.exit();
 		}
 	}
@@ -64,27 +63,23 @@ public class Client {
 		try {
 			if (line.startsWith("PING")) 
 				out.println("PONG");
-			else if (line.startsWith("E_OK")) {
+
+			else if (line.startsWith("E_OK"))
 				queue.add(line);
-				System.out.println(line); // server cesto vraca E_OK pa ga obradjujemo ovde
-			}
+			
 			else if (line.equals("E_USERS:")) {
-				System.out.println(line);
 				LinkedList<String> users = new LinkedList<>();
-				while ((line = in.readLine()).endsWith("\r\n")) {
-					System.out.println(line + " - in while");
+				while (!(line = in.readLine()).equals("E_END")) 
 					users.add(line);
-				}
+				
 				l.setPlayers(users);
-				l.addChatInfo(users.get(0));
 			}
 			else if (line.equals("E_GAMES:")) {
 				LinkedList<String> games = new LinkedList<>();
-				while ((line = in.readLine()).endsWith("\r\n"))
+				while (!(line = in.readLine()).equals("E_END")) 
 					games.add(line);
 				
-				//l.getGamesList().clear();
-				//l.getGamesList().addAll(games);
+				l.setGames(games);
 			}
 			else if (line.startsWith("E_TURN")) {
 				whosOnMove = line.substring(line.indexOf(":") + 1);
@@ -119,12 +114,13 @@ public class Client {
 			}
 			else if (line.startsWith("E_GAME_REQUEST")) {
 				// FIX - treba lista u LobbyViewu
-				// l.getRequestList().add(line.substring(line.indexOf(":") + 2));
+				// l.requestList.add(line.substring(line.indexOf(":") + 2));
 			}
 			else if (line.startsWith("E_GAME_ACCEPTED")) {
 				// FIX - treba lista u LobbyViewu
 				// l.getRequestList().remove(line.substring(line.indexOf(":") + 2));
-				
+				c = gui.loadGameView();
+				initGameCallbacks();
 			}
 			else if (line.startsWith("E_GAME_DECLINED")) {
 				//						
@@ -140,7 +136,6 @@ public class Client {
 			else {
 				queue.add(line);
 				System.out.println(line);
-				//toChatInfo(line);
 			}
 		} catch (IOException e) { }
 	}
@@ -159,8 +154,6 @@ public class Client {
 			l.setLoginError("");
 			username = l.getLoginUsername();
 			out.println("LOGIN: " + username);
-			// DELETE LINE
-			System.out.println("LOGIN: " + username);
 			try {
 				String line = queue.take();
 				if (line.startsWith("E_OK"))
@@ -188,14 +181,19 @@ public class Client {
 			c.setChatInput("");
 		}); 
 		
-		c.setGameInfo(whosOnMove + "'s turn");
+		c.setGameInfo(whosOnMove);
 	}
 	
 	public static void main(String[] args) throws IOException {
+		Thread thread = Thread.currentThread();
 		new Thread(() -> {
 			Application.launch(Gui.class, args);
 		}).start();
 		
+		Gui.onClose(() -> {
+			thread.interrupt();
+			System.out.println(thread);
+		});
 		new Client();
 	}
 }

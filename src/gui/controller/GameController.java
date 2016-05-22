@@ -1,6 +1,5 @@
 package gui.controller;
 
-import checkersBoard.Board;
 import gui.Action;
 import gui.ActionXY;
 import gui.Gui;
@@ -13,7 +12,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -21,11 +19,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import checkersBoard.Board;
 
 public class GameController {
 
@@ -49,8 +47,6 @@ public class GameController {
 	
 	private FlowPane[][] board = new FlowPane[10][10];
 	
-	
-	
 	private Action chatSendHandler;
 	private Action leaveGameHandler;
 	private ActionXY fieldClickHandler;
@@ -62,36 +58,6 @@ public class GameController {
 				flow.setMaxWidth((double) newval - 40);
 			}
 		});
-		
-		
-		double fieldSize = Math.floor( gameBoard.getWidth() / 10 );
-		
-		/*for(int i = 0; i < 10; i++) {
-			for(int j = 0; j < 10; j++) {
-				board[i][j] = new FlowPane();
-				
-				if((i + j) % 2 == 0)
-					board[i][j].setStyle("-fx-background-color: #f4f4f4;");
-				else {
-					board[i][j].setStyle("-fx-background-color: #272625;");
-					
-					final int x = i, y = j;
-					
-					board[i][j].setOnMouseClicked((e) -> {
-						if(fieldClickHandler != null)
-							fieldClickHandler.handle(x, y);
-					});
-				}
-				
-                board[i][j].setMinSize( 0, 0 );
-				board[i][j].setPrefHeight( fieldSize );
-				board[i][j].setPrefWidth( fieldSize );
-				
-				board[i][j].setAlignment(Pos.CENTER);
-				
-				gameBoard.getChildren().add(board[i][j]);
-			}
-		}*/
 		
 		ChangeListener<Number> boardSizeListener = (observer, oldval, newval) -> {
 			double size = Math.min( gameBoardHolder.getWidth() , gameBoardHolder.getHeight() );
@@ -250,9 +216,7 @@ public class GameController {
 	}
 	
 	public void setGameInfo(String info) {
-		gameInfo.setText(info);
+		gameInfo.setText(info + "'s turn");
 	}
 	
 }
-
-
