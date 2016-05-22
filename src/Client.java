@@ -124,7 +124,7 @@ public class Client {
 			}
 			else if (line.startsWith("E_GAME_STARTED")) {
 				c = gui.loadGameView();
-				initGameCallbacks();	
+				initGameCallbacks();
 			}
 			else if (line.startsWith("E_GAME_DECLINED")) {
 				String uname = line.substring(line.indexOf(":") + 2);
@@ -217,12 +217,13 @@ public class Client {
 		
 	}
 	private void initGameCallbacks() {
+		first = true;
+		
 		c.onLeaveButton(() -> {
 			out.println("LEAVE GAME");
 			try { queue.take(); } catch (Exception e) {}
-			c = null;
-			first = true;
 			gui.loadLobbyView();
+			c = null;
 		}); 
 		
 		c.onChatButton(() -> {
