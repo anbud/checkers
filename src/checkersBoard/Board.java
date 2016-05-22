@@ -1,26 +1,16 @@
 package checkersBoard;
 
-import exceptions.DrawException;
-import exceptions.LostException;
-import java.awt.EventQueue;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
+import exceptions.DrawException;
+import exceptions.LostException;
 import figures.Figure;
 import figures.FigureColor;
 import figures.QueenFigure;
 import figures.SimpleFigure;
 import gui.Gui;
 import gui.GuiFigure;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.TilePane;
@@ -164,8 +154,7 @@ public class Board extends TilePane {
 			}
 
 			queenNumMoves++;
-			changePosition(dest);
-			System.out.println(queenNumMoves + " " + captured.size());
+			changePosition(dest);			
 			if (queenNumMoves >= captured.size()) {
 				queenNumMoves = 0;
 				highlight(false);
