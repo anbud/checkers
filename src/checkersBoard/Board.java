@@ -359,6 +359,7 @@ public class Board extends TilePane {
 	}
 	
 	private void checkGame() throws DrawException, LostException {
+		System.out.println(me + " " + onMove);
 		if(me == onMove)
 			return;
 		
