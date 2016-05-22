@@ -87,29 +87,23 @@ public class Client {
 			}
 
 			else if (line.startsWith("E_LOBBY_MESSAGE")) {
-				String poruka = line.substring(line.indexOf(":") + 2);
-				String userSent = poruka.substring(0, poruka.indexOf(":"));
-				Platform.runLater(() -> 
-					l.addChatMessage(userSent, poruka.substring(poruka.indexOf(":") + 2))
-				);	
+				String msg = line.substring(line.indexOf(":") + 2);
+				String userSent = msg.substring(0, msg.indexOf(":"));
+				l.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2));
 			}
 			else if (line.startsWith("E_LOBBY_INFO")) {
-				String poruka = line.substring(line.indexOf(":") + 2);
-				Platform.runLater(() -> 
-					l.addChatInfo(poruka.substring(poruka.indexOf(":") + 2))
-				);	
+				String msg = line.substring(line.indexOf(":") + 2);
+				l.addChatInfo(msg.substring(msg.indexOf(":") + 2));
 			} 
 			else if (line.startsWith("E_MESSAGE")) {
-				String poruka = line.substring(line.indexOf(":") + 2);
-				String userSent = poruka.substring(0, poruka.indexOf(":"));
-				Platform.runLater(() -> 
-					c.addChatMessage(userSent, poruka.substring(poruka.indexOf(":") + 2))
-				);	
+				String msg = line.substring(line.indexOf(":") + 2);
+				String userSent = msg.substring(0, msg.indexOf(":"));
+				c.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2));
 			} 
 			else if (line.startsWith("E_INFO")) {
-				String poruka = line.substring(line.indexOf(":") + 2);
+				String msg = line.substring(line.indexOf(":") + 2);
 				Platform.runLater(() -> 
-					l.addChatInfo(poruka.substring(poruka.indexOf(":") + 2))
+					l.addChatInfo(msg.substring(msg.indexOf(":") + 2))
 				);	
 			}
 			else if (line.startsWith("E_GAME_REQUEST")) {
@@ -143,16 +137,19 @@ public class Client {
 	@SuppressWarnings("unused")
 	private void toChatInfo(String line) {
 		final String fin = line;
-		Platform.runLater(() -> {
-			l.addChatInfo(fin);
-		});
+		l.addChatInfo(fin);
 	}
 	
 	private void initLobbyCallbacks() {
 		l.onLoginButton(() -> {
 			l.setButtonEnabled(false);
 			l.setLoginError("");
-			username = l.getLoginUsername();
+			username = l.getLoginUsername().trim();
+			if (username.equals("")) {
+				l.setButtonEnabled(true);
+				return;
+			}
+			
 			out.println("LOGIN: " + username);
 			try {
 				String line = queue.take();
