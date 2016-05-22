@@ -362,6 +362,11 @@ public class Board extends TilePane {
 		if(me == onMove)
 			return;
 		
+		if(me == FigureColor.RED)
+			me = FigureColor.WOODEN;
+		else
+			me = FigureColor.RED;
+		
 		if (isDraw())
 			System.out.println("draw");
 			if(drawHandler != null)
