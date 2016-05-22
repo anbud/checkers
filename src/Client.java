@@ -22,7 +22,6 @@ public class Client {
 	private LobbyController l;
 	private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<String>();
 	
-	private String gameId;
 	private String username;
 	private String whosOnMove;
 	
@@ -33,7 +32,6 @@ public class Client {
 	}
 	
 	private void initialize() {
-		gameId = "";
 		username = "default";
 		whosOnMove = username;
 		
@@ -52,6 +50,7 @@ public class Client {
 					process(line = in.readLine(), in);
 				
 			} catch (Exception e) {
+				gui.showMessage("Server failure", "Andrej ugasio server (sad face)");
 				e.printStackTrace();
 			}
 			
@@ -87,7 +86,8 @@ public class Client {
 				l.setGames(games);
 			}
 			else if (line.startsWith("E_TURN")) {
-				whosOnMove = line.substring(line.indexOf(":") + 1);
+				whosOnMove = line.substring(line.indexOf(":") + 2);
+				System.out.println(whosOnMove);
 				c.setGameInfo(whosOnMove);
 			}
 			else if (line.startsWith("E_LOBBY_MESSAGE")) {
@@ -209,6 +209,8 @@ public class Client {
 		});
 		
 		c.setGameInfo(whosOnMove);
+		
+		
 	}
 	
 	public static void main(String[] args) throws IOException {
