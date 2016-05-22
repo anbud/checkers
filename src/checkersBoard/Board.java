@@ -12,7 +12,6 @@ import figures.SimpleFigure;
 import gui.Action;
 import gui.Gui;
 import gui.GuiFigure;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -354,14 +353,17 @@ public class Board extends TilePane {
 	
 	private void checkGame() throws DrawException, LostException {
 		if (isDraw())
+			System.out.println("draw");
 			if(drawHandler != null)
 				drawHandler.handle();
 		else if (isLost()) {
+			System.out.println("lost");
 			if(winHandler != null)
 				winHandler.handle();
 		}
 		else if(turnHandler != null) {
 			turnHandler.handle();
+			System.out.println("turn");
 		}
 	}
 
