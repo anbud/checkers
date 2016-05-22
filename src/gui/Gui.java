@@ -188,6 +188,18 @@ public class Gui extends Application {
 		
 		c.setRequests(d);
 		
+		c.onRequestButton((s) -> {
+			System.out.println("request " + s);
+		});
+		
+		c.onAcceptButton((s) -> {
+			System.out.println("accept " + s);
+		});
+		
+		c.onRejectButton((s) -> {
+			System.out.println("reject " + s);
+		});
+		
 		/*
 		// otvaranje GameView-a, vraca controller za taj view
 		GameController c = gui.loadGameView();

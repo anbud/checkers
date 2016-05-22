@@ -4,6 +4,7 @@ import gui.Action;
 import gui.Gui;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,6 +51,9 @@ public class LobbyController {
 	
 	private Action loginButtonHandler;
 	private Action chatSendHandler;
+	private Consumer<String> requestHandler;
+	private Consumer<String> acceptHandler;
+	private Consumer<String> rejectHandler;
 	
 	@FXML
 	private void chatSendAction(ActionEvent event) {
@@ -77,6 +81,18 @@ public class LobbyController {
 	
 	public void onLoginButton(Action action) {
 		loginButtonHandler = action;
+	}
+	
+	public void onRequestButton(Consumer<String> action) {
+		requestHandler = action;
+	}
+	
+	public void onAcceptButton(Consumer<String> action) {
+		acceptHandler = action;
+	}
+	
+	public void onRejectButton(Consumer<String> action) {
+		rejectHandler = action;
 	}
 	
 	public String getLoginUsername() {
@@ -157,6 +173,14 @@ public class LobbyController {
 			
 			Button button = new Button("request");
 			button.getStyleClass().add("request-button");
+			
+			final String ss = s;
+			
+			button.setOnMouseClicked((e) -> {
+				if(requestHandler != null) {
+					requestHandler.accept(ss);
+				}
+			});
 
 			AnchorPane box = new AnchorPane();
 			box.getChildren().add(name);
@@ -226,6 +250,13 @@ public class LobbyController {
 				accept.setScaleY(1.3);
 			});
 			
+			final String ss = s;
+			accept.setOnMouseClicked((e) -> {
+				if(acceptHandler != null) {
+					acceptHandler.accept(ss);
+				}
+			});
+			
 			accept.setOnMouseExited((e) -> {
 				accept.setScaleX(1.0);
 				accept.setScaleY(1.0);
@@ -239,13 +270,19 @@ public class LobbyController {
 			reject.getStyleClass().add("request-accept");
 			
 			reject.setOnMouseEntered((e) -> {
-				reject.setScaleX(1.3);
-				reject.setScaleY(1.3);
+				reject.setScaleX(1.25);
+				reject.setScaleY(1.25);
 			});
 			
 			reject.setOnMouseExited((e) -> {
 				reject.setScaleX(1.0);
 				reject.setScaleY(1.0);
+			});
+			
+			reject.setOnMouseClicked((e) -> {
+				if(rejectHandler != null) {
+					rejectHandler.accept(ss);
+				}
 			});
 
 			AnchorPane box = new AnchorPane();
