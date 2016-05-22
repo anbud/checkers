@@ -156,13 +156,15 @@ public class Gui extends Application {
 		// instanca Gui
 		Gui gui = Gui.getInstance();
 		
-		LobbyController c = gui.loadLobbyView(false);
+		GameController g = gui.loadGameView();
+		
+		/*LobbyController c = gui.loadLobbyView(false);
 		
 		List<String> a = new ArrayList<>();
 		a.add("a");
 		a.add("b");
 		
-		c.setPlayers(a);
+		c.setPlayers(a);*/
 		
 		/*
 		// otvaranje GameView-a, vraca controller za taj view
