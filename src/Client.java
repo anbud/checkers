@@ -61,7 +61,6 @@ public class Client {
 	}
 
 	private void process(String line, BufferedReader in) {
-		System.out.println(line);
 		try {
 			if (line.startsWith("PING")) 
 				out.println("PONG");
@@ -128,12 +127,15 @@ public class Client {
 				l.addChatInfo(uname + " rejected challenge.");				
 			}
 			else if (line.equals("E_GAME_OVER")) {
-				gui.showMessage("", "");
+				gui.showMessage("Game over", "");
 			}
 			else if (line.startsWith("E_TURN")) {
 				whosOnMove = line.substring(line.indexOf(":") + 2);
-				System.out.println(whosOnMove);
 				c.setGameInfo(whosOnMove);
+				if (!whosOnMove.equals(username))
+					c.setBlockBoard(true);
+				else
+					c.setBlockBoard(false);
 			}
 			else if (line.equals("E_WON")) {
 				String winner = line.substring(line.indexOf(":") + 2);
@@ -147,7 +149,7 @@ public class Client {
 			else if (line.startsWith("E_MULTIPLE_REQUESTS")) { }
 			else {
 				queue.add(line);
-				System.out.println(line);
+				//System.out.println(line);
 			}
 		} catch (IOException e) { }
 	}
