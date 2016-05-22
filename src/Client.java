@@ -230,6 +230,10 @@ public class Client {
 		c.getBoard().onMove((src) -> {
 			out.println(String.format("MOVE: %d %d", src.getXX(), src.getYY()));
 		});
+		
+		c.getBoard().onTurn(() -> {
+			out.println("END_TURN");
+		});
 	}
 	
 	public static void main(String[] args) throws IOException {
