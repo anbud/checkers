@@ -107,16 +107,20 @@ public class Client {
 				String msg = line.substring(line.indexOf(":") + 2);
 				l.addChatInfo(msg.substring(msg.indexOf(":") + 2));
 			}
-			else if (line.equals("E_REQUESTS")) {
+			else if (line.startsWith("E_REQUESTS")) {
 				LinkedList<String> requests = new LinkedList<>();
 				while (!(line = in.readLine()).equals("E_END")) 
 					requests.add(line);
 				
 				l.setRequests(requests);
 			}
-			else if (line.startsWith("E_GAME_ACCEPTED")) {
+			else if (line.startsWith("E_GAME_STARTED")) {
 				c = gui.loadGameView();
-				initGameCallbacks();
+				initGameCallbacks();	
+			}
+			else if (line.startsWith("E_GAME_ACCEPTED")) {
+//				c = gui.loadGameView();
+//				initGameCallbacks();
 			}
 			else if (line.startsWith("E_GAME_DECLINED")) {
 				String uname = line.substring(line.indexOf(":") + 2);
@@ -178,13 +182,13 @@ public class Client {
 		l.onAcceptButton((uname) -> {
 			out.println("GAME ACCEPT: " + uname);
 			
-			try {
-				String status = queue.take();
-				if (status.startsWith("E_OK")) {
-					c = gui.loadGameView();
-					initGameCallbacks();
-				}
-			} catch (Exception e) { }
+//			try {
+//				String status = queue.take();
+//				if (status.startsWith("E_OK")) {
+//					c = gui.loadGameView();
+//					initGameCallbacks();
+//				}
+//			} catch (Exception e) { }
 						
 		});
 		
