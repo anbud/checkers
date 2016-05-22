@@ -66,13 +66,15 @@ public class Client {
 			if (line.startsWith("PING")) 
 				out.println("PONG");
 			else if (line.startsWith("E_LAG")) { }
-			else if (line.startsWith("E_OK"))
+			else if (line.startsWith("E_OK")) {
 				queue.add(line);
-			
+				System.out.println(line);
+			}
 			else if (line.equals("E_USERS:")) {
 				LinkedList<String> users = new LinkedList<>();
 				while (!(line = in.readLine()).equals("E_END")) 
-					users.add(line);
+					if (!line.equals(username))
+						users.add(line);
 				
 				l.setPlayers(users);
 			}
