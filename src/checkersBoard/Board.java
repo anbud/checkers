@@ -1,5 +1,6 @@
 package checkersBoard;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class Board extends TilePane {
 	private final Image redFigure = new Image(Gui.class.getResource(GuiFigure.BLACK.file).toExternalForm());
 	private final Image woodenFigure = new Image(Gui.class.getResource(GuiFigure.WHITE.file).toExternalForm());
 	private Field myPosition;
-	private List<Field> moves;
+	private List<Field> possibleMoves;
 	private List<Field> captured;
 	private List<Field> whoCanDoPercussiveMove;
 	private boolean percussive;
@@ -39,6 +40,8 @@ public class Board extends TilePane {
 	private FigureColor onMove;
 	private FigureColor me;
 	private int queenNumMoves;
+	private List<Move> moves;
+	
 	private Consumer<Field> moveHandler;
 	private Action turnHandler;
 	private Action drawHandler;
@@ -80,9 +83,10 @@ public class Board extends TilePane {
 		percussive = false;
 		check = false;
 		onMove = FigureColor.WOODEN;
-		moves = new LinkedList<Field>();
+		possibleMoves = new LinkedList<Field>();
 		captured = new LinkedList<Field>();
 		whoCanDoPercussiveMove = new LinkedList<Field>();
+		moves = new ArrayList<Move>();
 	}
 
 	private void setFigures() {
@@ -154,7 +158,7 @@ public class Board extends TilePane {
 	}
 
 	private void highlight(boolean highlighted) {
-		for (Field f : moves)
+		for (Field f : possibleMoves)
 			f.highlight(!highlighted);
 	}
 
@@ -237,6 +241,21 @@ public class Board extends TilePane {
 		} catch(Exception e) {}
 		
 	}
+	
+	private void addMove(String type, Field source, Field dest) {
+		Move move = new Move(type, hash(source.getXX(), source.getYY()), hash(dest.getXX(), dest.getYY()));
+		moves.add(move);
+		System.out.println(move);
+	}
+	
+	private int hash(int x, int y) {	
+		int realNumber = x * 10 + y + 1;
+		if (x % 2 == 0) {
+			return realNumber / 2;
+		} else {
+			return realNumber / 2 + 1;
+		}	
+	}
 
 	private boolean isPromotion(Field dest) {
 		if (((dest.getXX() == TOP) && myPosition.getFigure().getColor().equals(FigureColor.WOODEN))
@@ -249,17 +268,16 @@ public class Board extends TilePane {
 	
 	private void doPercussiveMove(Field dest) {
 		if (myPosition.getFigure().getClass() == QueenFigure.class) {
-			if (moves.indexOf(dest) > 0 && moves.indexOf(dest) < captured.size()) {
-				System.out.println("KRAJ");
+			if (possibleMoves.indexOf(dest) > 0 && possibleMoves.indexOf(dest) < captured.size()) {			
 				return;
 			}
-
+			addMove(Move.PERCUSSIVE, myPosition, dest);
 			queenNumMoves++;
 			changePosition(dest);
 			if (queenNumMoves >= captured.size()) {
 				queenNumMoves = 0;
 				highlight(false);
-				moves.clear();
+				possibleMoves.clear();
 				percussive = false;
 				capture();
 				nextOnMove();
@@ -269,17 +287,18 @@ public class Board extends TilePane {
 				check = true;
 			} else {
 				dest.highlight(true);
-				moves.add(moves.remove(0));
+				//possibleMoves.add(possibleMoves.remove(0));
 			}
 		} else {
-			if (moves.indexOf(dest) > 0) {
+			if (possibleMoves.indexOf(dest) > 0) {
 				return;
 			}
-
+			
+			addMove(Move.PERCUSSIVE, myPosition, dest);
 			changePosition(dest);
 			dest.highlight(true);
-			moves.remove(dest);
-			if (moves.isEmpty()) {
+			possibleMoves.remove(dest);
+			if (possibleMoves.isEmpty()) {
 				percussive = false;
 				capture();
 				nextOnMove();
@@ -288,13 +307,14 @@ public class Board extends TilePane {
 				checkGame();
 				check = true;
 			}
-		}
+		}		
 	}
 
 	private void doQuietMove(Field dest) {
+		addMove(Move.QUIET, myPosition, dest);
 		changePosition(dest);
 		highlight(false);
-		moves.clear();
+		possibleMoves.clear();
 		nextOnMove();
 		if (isPromotion(myPosition))
 			doPromotion();
@@ -312,7 +332,7 @@ public class Board extends TilePane {
 
 	private void fetchInfo(Field dest) {
 		myPosition = dest;
-		moves = myPosition.getFigure().getMoves(myPosition);
+		possibleMoves = myPosition.getFigure().getMoves(myPosition);
 		captured = myPosition.getFigure().getCaptured();
 		percussive = myPosition.getFigure().isPercurssiveMove();
 	}
@@ -320,7 +340,7 @@ public class Board extends TilePane {
 	public void move(Field dest) {
 		Figure temp = dest.getFigure();
 		if (temp == null) {
-			if (moves.contains(dest)) {
+			if (possibleMoves.contains(dest)) {
 				doMove(dest);
 			}
 		} else if (isOnMove(dest)) {
@@ -338,7 +358,7 @@ public class Board extends TilePane {
 
 	private void findLongestMove() {
 		List<Field> currentRoad = null;
-		List<Field> tempRoad = moves;
+		List<Field> tempRoad = possibleMoves;
 		whoCanDoPercussiveMove.clear();
 		check = false;
 		for (int i = 0; i < board.length; i++) {
