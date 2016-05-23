@@ -86,7 +86,7 @@ public class Gui extends Application {
 		
 		stage.setTitle("Checkers - special thanks to UPS");
 		
-		stage.setScene(new Scene(new AnchorPane(), 900, 690));
+		stage.setScene(new Scene(new AnchorPane(), 950, 650));
 		
 		stage.show();
 		

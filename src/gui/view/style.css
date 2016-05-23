@@ -91,6 +91,8 @@
 
 .box-header {
 	-fx-background-color: #106CC8;
+	-fx-border-width: 0 0 5 0;
+	-fx-border-color: #0B4987;
 }
 
 .box-body {

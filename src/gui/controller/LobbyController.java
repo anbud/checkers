@@ -184,11 +184,15 @@ public class LobbyController {
 			AnchorPane box = new AnchorPane();
 			box.getChildren().add(name);
 			box.getChildren().add(button);
+
+			box.setStyle("-fx-padding: 8px; -fx-border-width: 0 0 1px 0; -fx-border-color: #ccc");
 			
 			AnchorPane.setLeftAnchor(name, 0.0);
 			AnchorPane.setTopAnchor(name, 0.0);
 			AnchorPane.setBottomAnchor(name, 0.0);
 			AnchorPane.setRightAnchor(button, 0.0);
+			AnchorPane.setTopAnchor(button, 0.0);
+			AnchorPane.setBottomAnchor(button, 0.0);
 			
 			temp.add(box);
 		}
