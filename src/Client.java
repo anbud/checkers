@@ -69,6 +69,7 @@ public class Client {
 		try {
 			if (line.startsWith("PING")) 
 				out.println("PONG");
+			
 			else if (line.startsWith("E_LAG")) { }
 			else if (line.startsWith("E_OK"))
 				queue.add(line);
@@ -127,13 +128,12 @@ public class Client {
 				c = gui.loadGameView();
 				initGameCallbacks();
 			}
-			else if (line.startsWith("E_GAME_DECLINED")) {
-				String uname = line.substring(line.indexOf(":") + 2);
-				l.addChatInfo(uname + " rejected challenge.");				
-			}
-			else if (line.equals("E_GAME_OVER")) {
+			else if (line.startsWith("E_GAME_DECLINED"))
+				l.addChatInfo(line.substring(line.indexOf(":") + 2) + " rejected challenge.");				
+			
+			else if (line.equals("E_GAME_OVER"))
 				gui.showMessage("Game over", "");
-			}
+				
 			else if (line.startsWith("E_TURN")) {
 				whosOnMove = line.substring(line.indexOf(":") + 2);
 				if (first) {
@@ -153,13 +153,12 @@ public class Client {
 				else
 					c.setBlockBoard(false);
 			}
-			else if (line.equals("E_WON")) {
-				String winner = line.substring(line.indexOf(":") + 2);
-				gui.showMessage("We have a winner", "User " + winner + " won!");
-			}
-			else if (line.equals("E_DRAW")) {
+			else if (line.equals("E_WON")) 
+				gui.showMessage("We have a winner", "User " + line.substring(line.indexOf(":") + 2) + " won!");
+			
+			else if (line.equals("E_DRAW"))
 				gui.showMessage("It's a draw", "No body wins.");
-			}
+			
 			else if (line.startsWith("E_GAME_ACCEPTED")) { }
 			else if (line.startsWith("E_GAME_REQUEST")) { }
 			else if (line.startsWith("E_MULTIPLE_REQUESTS")) {
@@ -167,21 +166,17 @@ public class Client {
 			}
 			else {
 				queue.add(line);
-				//System.out.println(line);
+				System.out.println(line);
 			}
 		} catch (IOException e) { }
 	}
 	
-	@SuppressWarnings("unused")
-	private void toChatInfo(String line) {
-		final String fin = line;
-		l.addChatInfo(fin);
-	}
-	
 	private void initLobbyCallbacks() {
+		
 		l.onLoginButton(() -> {
 			l.setButtonEnabled(false);
 			l.setLoginError("");
+			
 			username = l.getLoginUsername().trim();
 			if (username.equals("")) {
 				l.setButtonEnabled(true);
@@ -212,6 +207,7 @@ public class Client {
 		
 		l.onAcceptButton((uname) -> {
 			out.println("GAME ACCEPT: " + uname);
+			
 			try { queue.take(); } catch (Exception e) {}
 		});
 		
@@ -241,6 +237,7 @@ public class Client {
 				return;
 			
 			out.println("GAMEMSG: " + c.getChatInput());
+			
 			c.setChatInput("");
 			try { queue.take(); } catch (Exception e) {}
 		});
