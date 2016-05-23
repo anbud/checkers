@@ -186,7 +186,7 @@ public class Board extends TilePane {
 	}
 
 	
-	private void doPercussiveMove(Field dest) throws DrawException, LostException {
+	private void doPercussiveMove(Field dest) {
 		if (myPosition.getFigure().getClass() == QueenFigure.class) {
 			if (moves.indexOf(dest) > 0 && moves.indexOf(dest) < captured.size()) {
 				System.out.println("KRAJ");
@@ -230,7 +230,7 @@ public class Board extends TilePane {
 		}
 	}
 
-	private void doQuietMove(Field dest) throws DrawException, LostException {
+	private void doQuietMove(Field dest) {
 		changePosition(dest);
 		highlight(false);
 		moves.clear();
@@ -241,7 +241,7 @@ public class Board extends TilePane {
 		check = true;
 	}
 
-	private void doMove(Field dest) throws DrawException, LostException {
+	private void doMove(Field dest) {
 		if (percussive) {
 			doPercussiveMove(dest);
 		} else {
@@ -260,11 +260,7 @@ public class Board extends TilePane {
 		Figure temp = dest.getFigure();
 		if (temp == null) {
 			if (moves.contains(dest)) {
-				try {
-					doMove(dest);
-				} catch (DrawException | LostException e) {
-					return;
-				}
+				doMove(dest);
 			}
 		} else if (isOnMove(dest)) {
 			if (check) {
@@ -358,23 +354,19 @@ public class Board extends TilePane {
 		return false;
 	}
 	
-	private void checkGame() throws DrawException, LostException {
-		System.out.println(me + " " + onMove);
+	private void checkGame() {
 		if(me == onMove)
 			return;
 		
 		if (isDraw())
-			System.out.println("draw");
 			if(drawHandler != null)
 				drawHandler.handle();
 		else if (isLost()) {
-			System.out.println("lost");
 			if(winHandler != null)
 				winHandler.handle();
 		}
 		else if(turnHandler != null) {
 			turnHandler.handle();
-			System.out.println("turn");
 		}
 	}
 

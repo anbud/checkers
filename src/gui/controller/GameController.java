@@ -55,12 +55,16 @@ public class GameController {
 	private ActionXY fieldClickHandler;
 	
 	@FXML
-	private void initialize() {	
-		chatList.widthProperty().addListener((observable, oldval, newval) -> {
+	private void initialize() {
+		ChangeListener<Number> chatWidthListener = (observable, oldval, newval) -> {
 			for(TextFlow flow : chatList.getItems()) {
 				flow.setMaxWidth((double) newval - 40);
 			}
-		});
+		};
+		
+		chatWidthListener.changed(null, 0, chatList.getWidth());
+		
+		chatList.widthProperty().addListener(chatWidthListener);
 		
 		ChangeListener<Number> boardSizeListener = (observer, oldval, newval) -> {
 			double size = Math.min( gameBoardHolder.getWidth() , gameBoardHolder.getHeight() );
