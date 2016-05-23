@@ -139,7 +139,7 @@ public class Client {
 				if (first) {
 					c.getBoard().whoAmI(whosOnMove.equals(username));
 					if (!whosOnMove.equals(username)) {
-						c.getBoard().setRotate(180);
+						c.getBoard().getParent().setRotate(180);
 						for(Node f : c.getBoard().getChildren()) {
 							f.setRotate(180);
 						}
@@ -162,7 +162,9 @@ public class Client {
 			}
 			else if (line.startsWith("E_GAME_ACCEPTED")) { }
 			else if (line.startsWith("E_GAME_REQUEST")) { }
-			else if (line.startsWith("E_MULTIPLE_REQUESTS")) { }
+			else if (line.startsWith("E_MULTIPLE_REQUESTS")) {
+				queue.add(line);
+			}
 			else {
 				queue.add(line);
 				//System.out.println(line);

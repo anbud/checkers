@@ -53,6 +53,10 @@ public class Field extends FlowPane {
 		return label.getImage();
 	}
 	
+	public ImageView getImage() {
+		return label;
+	}
+	
 	public void setIcon(Image icon) {
 		label.setImage(icon);
 	}

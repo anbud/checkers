@@ -11,9 +11,17 @@ import gui.Action;
 import gui.Gui;
 import gui.GuiFigure;
 import java.util.function.Consumer;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
+import javafx.util.Duration;
 
 public class Board extends TilePane {
 
@@ -167,13 +175,67 @@ public class Board extends TilePane {
 	}
 
 	public void changePosition(Field dest) {
-		Figure temp = myPosition.getFigure();
+		/*Figure temp = myPosition.getFigure();
 		Image tempIcon = myPosition.getIcon();
 		myPosition.setFigure(null);
 		myPosition.setIcon(null);
 		dest.setFigure(temp);
 		dest.setIcon(tempIcon);
+		myPosition = dest;*/
+		
+		Figure temp = myPosition.getFigure();
+		Image tempIcon = myPosition.getIcon();
+		
+		Bounds srcb = myPosition.getBoundsInParent();
+		Bounds destb = dest.getBoundsInParent();
+		Bounds imgb = myPosition.getImage().getBoundsInParent();
+		
+		ImageView animImg = new ImageView(myPosition.getIcon());
+		animImg.setFitHeight( myPosition.getImage().getFitHeight() );
+		animImg.setFitWidth( myPosition.getImage().getFitWidth() );
+		
+		myPosition.setFigure(null);
+		myPosition.setIcon(null);
+		
 		myPosition = dest;
+		
+		dest.setFigure(temp);
+		
+		AnchorPane parent = (AnchorPane) getParent();
+		
+		double dur = 300;
+		
+		Platform.runLater(() -> {
+		
+			parent.getChildren().add( animImg );
+			animImg.relocate( srcb.getMinX() + imgb.getMinX(), srcb.getMinY() + imgb.getMinY() );  
+
+			Timeline timeline = new Timeline();
+			timeline.setCycleCount(1);
+			timeline.setAutoReverse(false);
+			timeline.getKeyFrames().add(
+					new KeyFrame(
+							Duration.millis(dur),
+							new KeyValue(animImg.layoutXProperty(), destb.getMinX() + imgb.getMinX())));
+			timeline.getKeyFrames().add(
+					new KeyFrame(
+							Duration.millis(dur),
+							new KeyValue(animImg.layoutYProperty(), destb.getMinY() + imgb.getMinY())));
+
+			timeline.setOnFinished((e) -> {
+				parent.getChildren().remove(animImg);
+
+				dest.setIcon(tempIcon);
+			});
+			
+			timeline.play();
+		
+		});
+		
+		try {
+			Thread.sleep((long)dur);
+		} catch(Exception e) {}
+		
 	}
 
 	private boolean isPromotion(Field dest) {

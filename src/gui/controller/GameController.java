@@ -52,13 +52,12 @@ public class GameController {
 	
 	private Action chatSendHandler;
 	private Action leaveGameHandler;
-	private ActionXY fieldClickHandler;
 	
 	@FXML
 	private void initialize() {
 		ChangeListener<Number> chatWidthListener = (observable, oldval, newval) -> {
 			for(TextFlow flow : chatList.getItems()) {
-				flow.setMaxWidth((double) newval - 40);
+				flow.setMaxWidth((double) newval - 30);
 			}
 		};
 		
@@ -127,10 +126,6 @@ public class GameController {
 		leaveGameHandler = action;
 	}
 	
-	public void onFieldClick(ActionXY action) {
-		fieldClickHandler = action;
-	}
-	
 	public void addChatMessage(String username, String message, boolean out) {
 		TextFlow flow = new TextFlow();
 		
@@ -141,7 +136,7 @@ public class GameController {
 		text = new Text("\n"+message);
 		flow.getChildren().add(text);
 		
-		flow.setMaxWidth(chatList.getWidth() - 40);
+		flow.setMaxWidth(chatList.getWidth() - 30);
 		
 		if(out)
 			flow.setTextAlignment(TextAlignment.RIGHT);
@@ -160,7 +155,7 @@ public class GameController {
 		text.setStyle("-fx-font-style: italic;");
 		flow.getChildren().add(text);
 		
-		flow.setMaxWidth(chatList.getWidth() - 40);
+		flow.setMaxWidth(chatList.getWidth() - 30);
 		flow.setTextAlignment(TextAlignment.CENTER);
 		
 		Platform.runLater(() -> {
