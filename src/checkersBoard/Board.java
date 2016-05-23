@@ -416,6 +416,12 @@ public class Board extends TilePane {
 
 		return null;
 	}
+	
+	public String getLastMove() {
+		if (!moves.isEmpty())
+			return moves.get(moves.size() - 1).toString();
+		return " ";
+	}
 
 	public boolean isIn(int x, int y) {
 		return (x >= TOP) && (x < NUM_FIELDS) && (y >= TOP) && (y < NUM_FIELDS);
