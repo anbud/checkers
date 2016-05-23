@@ -41,7 +41,7 @@ public class Board extends TilePane {
 	private FigureColor me;
 	private int queenNumMoves;
 	private List<Move> moves;
-	
+
 	private Consumer<Field> moveHandler;
 	private Action turnHandler;
 	private Action drawHandler;
@@ -179,96 +179,93 @@ public class Board extends TilePane {
 	}
 
 	public void changePosition(Field dest) {
-		/*Figure temp = myPosition.getFigure();
-		Image tempIcon = myPosition.getIcon();
-		myPosition.setFigure(null);
-		myPosition.setIcon(null);
-		dest.setFigure(temp);
-		dest.setIcon(tempIcon);
-		myPosition = dest;*/
-		
+		/*
+		 * Figure temp = myPosition.getFigure(); Image tempIcon =
+		 * myPosition.getIcon(); myPosition.setFigure(null);
+		 * myPosition.setIcon(null); dest.setFigure(temp);
+		 * dest.setIcon(tempIcon); myPosition = dest;
+		 */
+
 		Figure temp = myPosition.getFigure();
 		Image tempIcon = myPosition.getIcon();
-		
+
 		Bounds srcb = myPosition.getBoundsInParent();
 		Bounds destb = dest.getBoundsInParent();
 		Bounds imgb = myPosition.getImage().getBoundsInParent();
-		
+
 		ImageView animImg = new ImageView(myPosition.getIcon());
-		animImg.setFitHeight( myPosition.getImage().getFitHeight() );
-		animImg.setFitWidth( myPosition.getImage().getFitWidth() );
-		
+		animImg.setFitHeight(myPosition.getImage().getFitHeight());
+		animImg.setFitWidth(myPosition.getImage().getFitWidth());
+
 		myPosition.setFigure(null);
 		myPosition.setIcon(null);
-		
+
 		myPosition = dest;
-		
+
 		dest.setFigure(temp);
-		
+
 		AnchorPane parent = (AnchorPane) getParent();
-		
+
 		double dur = 300;
-		
+
 		Platform.runLater(() -> {
-		
-			parent.getChildren().add( animImg );
-			animImg.relocate( srcb.getMinX() + imgb.getMinX(), srcb.getMinY() + imgb.getMinY() );  
+
+			parent.getChildren().add(animImg);
+			animImg.relocate(srcb.getMinX() + imgb.getMinX(), srcb.getMinY() + imgb.getMinY());
 
 			Timeline timeline = new Timeline();
 			timeline.setCycleCount(1);
 			timeline.setAutoReverse(false);
-			timeline.getKeyFrames().add(
-					new KeyFrame(
-							Duration.millis(dur),
-							new KeyValue(animImg.layoutXProperty(), destb.getMinX() + imgb.getMinX())));
-			timeline.getKeyFrames().add(
-					new KeyFrame(
-							Duration.millis(dur),
-							new KeyValue(animImg.layoutYProperty(), destb.getMinY() + imgb.getMinY())));
+			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(dur),
+					new KeyValue(animImg.layoutXProperty(), destb.getMinX() + imgb.getMinX())));
+			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(dur),
+					new KeyValue(animImg.layoutYProperty(), destb.getMinY() + imgb.getMinY())));
 
 			timeline.setOnFinished((e) -> {
 				parent.getChildren().remove(animImg);
 
 				dest.setIcon(tempIcon);
 			});
-			
+
 			timeline.play();
-		
+
 		});
-		
+
 		try {
-			Thread.sleep((long)dur);
-		} catch(Exception e) {}
-		
+			Thread.sleep((long) dur);
+		} catch (Exception e) {
+		}
+
 	}
-	
+
 	private void addMove(String type, Field source, Field dest) {
 		Move move = new Move(type, hash(source.getXX(), source.getYY()), hash(dest.getXX(), dest.getYY()));
 		moves.add(move);
-		System.out.println(move);
 	}
-	
-	private int hash(int x, int y) {	
+
+	private int hash(int x, int y) {
 		int realNumber = x * 10 + y + 1;
 		if (x % 2 == 0) {
 			return realNumber / 2;
 		} else {
 			return realNumber / 2 + 1;
-		}	
+		}
 	}
 
 	private boolean isPromotion(Field dest) {
-		if (((dest.getXX() == TOP) && myPosition.getFigure().getColor().equals(FigureColor.WOODEN))
-				|| ((dest.getXX() == NUM_FIELDS - 1) && myPosition.getFigure().getColor().equals(FigureColor.RED))) {
-			return true;
+		if (myPosition.getFigure().getClass() != QueenFigure.class) {
+			if (((dest.getXX() == TOP) && myPosition.getFigure().getColor().equals(FigureColor.WOODEN))
+					|| ((dest.getXX() == NUM_FIELDS - 1)
+							&& myPosition.getFigure().getColor().equals(FigureColor.RED))) {
+				return true;
+			}
 		}
 		return false;
 	}
 
-	
 	private void doPercussiveMove(Field dest) {
 		if (myPosition.getFigure().getClass() == QueenFigure.class) {
-			if (possibleMoves.indexOf(dest) > 0 && possibleMoves.indexOf(dest) < captured.size()) {			
+			if (possibleMoves.indexOf(dest) > 0 && possibleMoves.indexOf(dest) < captured.size()) {
 				return;
 			}
 			addMove(Move.PERCUSSIVE, myPosition, dest);
@@ -287,13 +284,13 @@ public class Board extends TilePane {
 				check = true;
 			} else {
 				dest.highlight(true);
-				//possibleMoves.add(possibleMoves.remove(0));
+				possibleMoves.add(possibleMoves.remove(0));
 			}
 		} else {
 			if (possibleMoves.indexOf(dest) > 0) {
 				return;
 			}
-			
+
 			addMove(Move.PERCUSSIVE, myPosition, dest);
 			changePosition(dest);
 			dest.highlight(true);
@@ -307,7 +304,7 @@ public class Board extends TilePane {
 				checkGame();
 				check = true;
 			}
-		}		
+		}
 	}
 
 	private void doQuietMove(Field dest) {
@@ -416,7 +413,7 @@ public class Board extends TilePane {
 
 		return null;
 	}
-	
+
 	public String getLastMove() {
 		if (!moves.isEmpty())
 			return moves.get(moves.size() - 1).toString();
@@ -440,20 +437,18 @@ public class Board extends TilePane {
 
 		return false;
 	}
-	
+
 	private void checkGame() {
-		if(me == onMove)
+		if (me == onMove)
 			return;
 
 		if (isDraw()) {
-			if(drawHandler != null)
+			if (drawHandler != null)
 				drawHandler.handle();
-		}
-		else if (isLost()) {
-			if(winHandler != null)
+		} else if (isLost()) {
+			if (winHandler != null)
 				winHandler.handle();
-		}
-		else if (turnHandler != null) {
+		} else if (turnHandler != null) {
 			turnHandler.handle();
 		}
 	}
