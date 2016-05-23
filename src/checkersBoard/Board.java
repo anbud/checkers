@@ -22,8 +22,8 @@ public class Board extends TilePane {
 	private final int NUM_FIELDS = 10;
 	private final int TOP = 0;
 	private Field[][] board = new Field[10][10];
-	private final Image redFigure = new Image( Gui.class.getResource(GuiFigure.BLACK.file).toExternalForm() );
-	private final Image woodenFigure = new Image( Gui.class.getResource(GuiFigure.WHITE.file).toExternalForm() );
+	private final Image redFigure = new Image(Gui.class.getResource(GuiFigure.BLACK.file).toExternalForm());
+	private final Image woodenFigure = new Image(Gui.class.getResource(GuiFigure.WHITE.file).toExternalForm());
 	private Field myPosition;
 	private List<Field> moves;
 	private List<Field> captured;
@@ -41,28 +41,28 @@ public class Board extends TilePane {
 	public Board() {
 		initialize();
 		setFigures();
-		
+
 		setStyle("-fx-border-width: 5px; -fx-border-color: #106CC8");
 	}
-	
+
 	public void onMove(Consumer<Field> action) {
 		moveHandler = action;
 	}
-	
+
 	public void onWin(Action action) {
 		winHandler = action;
 	}
-	
+
 	public void onDraw(Action action) {
 		drawHandler = action;
 	}
-	
+
 	public void onTurn(Action action) {
 		turnHandler = action;
 	}
-	
+
 	public void whoAmI(boolean a) {
-		if(a)
+		if (a)
 			me = FigureColor.WOODEN;
 		else
 			me = FigureColor.RED;
@@ -89,26 +89,26 @@ public class Board extends TilePane {
 				if ((i + j) % 2 != 0 && (i > 5)) {
 					figure = new SimpleFigure(woodenFigure, FigureColor.WOODEN, this);
 				}
-				
-				double size = getWidth()/10;
-				
+
+				double size = getWidth() / 10;
+
 				if ((i + j) % 2 != 0) {
-					board[i][j] = new Field(FieldColor.BLACK, figure, i, j, size*0.8);
+					board[i][j] = new Field(FieldColor.BLACK, figure, i, j, size * 0.8);
 					board[i][j].setOnMouseClicked((e) -> {
 						move((Field) e.getSource());
-						if(moveHandler != null)
+						if (moveHandler != null)
 							moveHandler.accept((Field) e.getSource());
 					});
 				} else {
-					board[i][j] = new Field(FieldColor.WHITE, null, i, j, size*0.8);
+					board[i][j] = new Field(FieldColor.WHITE, null, i, j, size * 0.8);
 				}
-				
-				board[i][j].setMinSize( 0, 0 );
-				board[i][j].setPrefHeight( size );
-				board[i][j].setPrefWidth( size );
-				
+
+				board[i][j].setMinSize(0, 0);
+				board[i][j].setPrefHeight(size);
+				board[i][j].setPrefWidth(size);
+
 				board[i][j].setAlignment(Pos.CENTER);
-				
+
 				getChildren().add(board[i][j]);
 			}
 		}
@@ -116,13 +116,13 @@ public class Board extends TilePane {
 
 	private void doPromotion() {
 		Image icon;
-		if(myPosition.getFigure().getColor().equals(FigureColor.WOODEN))
-			icon = new Image( Gui.class.getResource(GuiFigure.WHITE_QUEEN.file).toExternalForm() );
+		if (myPosition.getFigure().getColor().equals(FigureColor.WOODEN))
+			icon = new Image(Gui.class.getResource(GuiFigure.WHITE_QUEEN.file).toExternalForm());
 		else
-			icon = new Image( Gui.class.getResource(GuiFigure.BLACK_QUEEN.file).toExternalForm() );
-			
+			icon = new Image(Gui.class.getResource(GuiFigure.BLACK_QUEEN.file).toExternalForm());
+
 		Figure promoted = new QueenFigure(icon, myPosition.getFigure().getColor(), this);
-		
+
 		myPosition.setFigure(null);
 		myPosition.setIcon(null);
 		myPosition.setFigure(promoted);
@@ -151,24 +151,24 @@ public class Board extends TilePane {
 		for (Field f : moves)
 			f.highlight(!highlighted);
 	}
-	
+
 	public void captureOne(int x, int y) {
 		board[x][y].setFigure(null);
 		board[x][y].setIcon(null);
 	}
 
 	private void capture() {
-		for (Field f : myPosition.getFigure().getCaptured()) {		
+		for (Field f : myPosition.getFigure().getCaptured()) {
 			f.setFigure(null);
 			f.setIcon(null);
 		}
 	}
-	
+
 	public void setMyPosition(int x, int y) {
 		myPosition = board[x][y];
 	}
-	
-	public void changePosition(Field dest) {	
+
+	public void changePosition(Field dest) {
 		Figure temp = myPosition.getFigure();
 		Image tempIcon = myPosition.getIcon();
 		myPosition.setFigure(null);
@@ -179,7 +179,8 @@ public class Board extends TilePane {
 	}
 
 	private boolean isPromotion(Field dest) {
-		if (dest.getXX() == TOP || dest.getXX() == NUM_FIELDS - 1) {
+		if (((dest.getXX() == TOP) && myPosition.getFigure().getColor().equals(FigureColor.WOODEN))
+				|| ((dest.getXX() == NUM_FIELDS - 1) && myPosition.getFigure().getColor().equals(FigureColor.RED))) {
 			return true;
 		}
 		return false;
@@ -194,7 +195,7 @@ public class Board extends TilePane {
 			}
 
 			queenNumMoves++;
-			changePosition(dest);			
+			changePosition(dest);
 			if (queenNumMoves >= captured.size()) {
 				queenNumMoves = 0;
 				highlight(false);
@@ -205,7 +206,7 @@ public class Board extends TilePane {
 				if (isPromotion(myPosition))
 					doPromotion();
 				checkGame();
-				check = true;						
+				check = true;
 			} else {
 				dest.highlight(true);
 				moves.add(moves.remove(0));
@@ -274,7 +275,7 @@ public class Board extends TilePane {
 			}
 		}
 	}
-	
+
 	private void findLongestMove() {
 		List<Field> currentRoad = null;
 		List<Field> tempRoad = moves;
@@ -300,7 +301,7 @@ public class Board extends TilePane {
 		currentRoad = null;
 		tempRoad = null;
 	}
-	
+
 	private boolean isLost() {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
@@ -357,15 +358,14 @@ public class Board extends TilePane {
 	private void checkGame() {
 		if(me == onMove)
 			return;
-		
+
 		if (isDraw())
 			if(drawHandler != null)
 				drawHandler.handle();
 		else if (isLost()) {
 			if(winHandler != null)
 				winHandler.handle();
-		}
-		else if(turnHandler != null) {
+		} else if (turnHandler != null) {
 			turnHandler.handle();
 		}
 	}
