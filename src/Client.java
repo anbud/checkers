@@ -12,6 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.scene.Node;
 
 public class Client {
 	
@@ -137,8 +138,12 @@ public class Client {
 				whosOnMove = line.substring(line.indexOf(":") + 2);
 				if (first) {
 					c.getBoard().whoAmI(whosOnMove.equals(username));
-					if (!whosOnMove.equals(username))
+					if (!whosOnMove.equals(username)) {
 						c.getBoard().setRotate(180);
+						for(Node f : c.getBoard().getChildren()) {
+							f.setRotate(180);
+						}
+					}
 					first = false;
 					
 				}

@@ -3,8 +3,6 @@ package checkersBoard;
 import java.util.LinkedList;
 import java.util.List;
 
-import exceptions.DrawException;
-import exceptions.LostException;
 import figures.Figure;
 import figures.FigureColor;
 import figures.QueenFigure;
@@ -359,13 +357,15 @@ public class Board extends TilePane {
 		if(me == onMove)
 			return;
 
-		if (isDraw())
+		if (isDraw()) {
 			if(drawHandler != null)
 				drawHandler.handle();
+		}
 		else if (isLost()) {
 			if(winHandler != null)
 				winHandler.handle();
-		} else if (turnHandler != null) {
+		}
+		else if (turnHandler != null) {
 			turnHandler.handle();
 		}
 	}
