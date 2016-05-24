@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -49,11 +50,18 @@ public class LobbyController {
 	@FXML
 	private TextField chatInput;
 	
+	@FXML
+	private ImageView chatMute;
+	
+	@FXML
+	private Tooltip muteTooltip;
+	
 	private Action loginButtonHandler;
 	private Action chatSendHandler;
 	private Consumer<String> requestHandler;
 	private Consumer<String> acceptHandler;
 	private Consumer<String> rejectHandler;
+	private Action chatMuteHandler;
 
 	@FXML
 	private void initialize() {
@@ -68,6 +76,8 @@ public class LobbyController {
 		Label msgRequests = new Label("Currently no requests");
 		msgRequests.getStyleClass().add("empty-view-msg");
 		requestList.setPlaceholder(msgRequests);
+		
+		setMuted(false);
 	}
 	
 	@FXML
@@ -90,6 +100,16 @@ public class LobbyController {
 		});
 	}
 	
+	@FXML
+	private void chatMuteAction(ActionEvent event) {
+		if(chatMuteHandler == null)
+			return;
+		
+		Platform.runLater(() -> {
+			chatMuteHandler.handle();
+		});
+	}
+	
 	public void onChatButton(Action action) {
 		chatSendHandler = action;
 	}
@@ -108,6 +128,27 @@ public class LobbyController {
 	
 	public void onRejectButton(Consumer<String> action) {
 		rejectHandler = action;
+	}
+	
+	public void onMute(Action action) {
+		chatMuteHandler = action;
+	}
+	
+	public void setMuted(boolean muted) {
+		Platform.runLater(() -> {
+			if(muted) {
+				chatMute.setImage(Gui.chatUnmute);
+				muteTooltip.setText("Enable chat sound");
+			}
+			else {
+				chatMute.setImage(Gui.chatMute);
+				muteTooltip.setText("Mute chat sound");
+			}
+		});
+	}
+	
+	public boolean isMuted() {
+		return chatMute.getImage() == Gui.chatUnmute;
 	}
 	
 	public String getLoginUsername() {

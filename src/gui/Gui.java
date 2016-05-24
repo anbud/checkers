@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -33,6 +34,9 @@ public class Gui extends Application {
 	private static boolean onStopMissed = false;
 	
 	private static CountDownLatch cdl = new CountDownLatch(2);
+	
+	public static Image chatMute = new Image( Gui.class.getResource("view/img/mute_chat.png").toExternalForm() );
+	public static Image chatUnmute = new Image( Gui.class.getResource("view/img/unmute_chat.png").toExternalForm() );
 	
 	public Gui() {
 		instance = this;
@@ -203,6 +207,12 @@ public class Gui extends Application {
 		
 		c.onRejectButton((s) -> {
 			System.out.println("reject " + s);
+		});
+		
+		c.onMute(() -> {
+			System.out.println(c.isMuted());
+			
+			c.setMuted(!c.isMuted());
 		});
 		
 		/*

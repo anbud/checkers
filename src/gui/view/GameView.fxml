@@ -56,6 +56,14 @@
                      </graphic>
                   </Button>
                   <ListView fx:id="chatList" styleClass="chat-list" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
+                  <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#chatMuteAction" styleClass="mute-button" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                     <graphic>
+                        <ImageView fx:id="chatMute" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+                     </graphic>
+                     <tooltip>
+                        <Tooltip fx:id="muteTooltip" text="Mute sounds" />
+                     </tooltip>
+                  </Button>
                </children>
             </AnchorPane>
          </children></AnchorPane>
