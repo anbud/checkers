@@ -185,7 +185,7 @@ public class LobbyController {
 			box.getChildren().add(name);
 			box.getChildren().add(button);
 
-			box.setStyle("-fx-padding: 8px; -fx-border-width: 0 0 1px 0; -fx-border-color: #ccc");
+			box.setStyle("-fx-padding: 8px; -fx-border-width: 0 0 1 0; -fx-border-color: #ccc");
 			
 			AnchorPane.setLeftAnchor(name, 0.0);
 			AnchorPane.setTopAnchor(name, 0.0);
