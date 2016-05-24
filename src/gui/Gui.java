@@ -189,6 +189,7 @@ public class Gui extends Application {
 		
 		List<String> d = new ArrayList<>();
 		d.add("asdpoi");
+		d.add("asdpoi2");
 		
 		c.setRequests(d);
 		

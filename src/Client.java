@@ -24,7 +24,7 @@ public class Client {
 	private GameController c;
 	private LobbyController l;
 	
-	private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<String>();
+	private LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<>();
 	
 	private String username;
 	private String whosOnMove;
@@ -269,7 +269,7 @@ public class Client {
 		
 		Gui.onClose(() -> {
 			thread.interrupt();
-			out.println("HELP");
+			out.println("PONG");
 		});
 		new Client();
 	}

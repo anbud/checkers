@@ -231,4 +231,13 @@
     -fx-padding: 0;
 }
 
+.empty-view-msg {
+	-fx-font-size: 25px;
+	-fx-text-fill: #555;
+}
 
+.list-items {
+	-fx-padding: 8px;
+	-fx-border-width: 0 0 1 0;
+	-fx-border-color: #ccc;
+}

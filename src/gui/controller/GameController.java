@@ -181,7 +181,7 @@ public class GameController {
 	}
 	
 	public void setDivider() {
-		divider.setDividerPositions(0.7);
+		divider.setDividerPositions(0.65);
 	}
 	
 }

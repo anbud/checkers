@@ -54,6 +54,21 @@ public class LobbyController {
 	private Consumer<String> requestHandler;
 	private Consumer<String> acceptHandler;
 	private Consumer<String> rejectHandler;
+
+	@FXML
+	private void initialize() {
+		Label msgGames = new Label("Currently no games");
+		msgGames.getStyleClass().add("empty-view-msg");
+		gameList.setPlaceholder(msgGames);
+
+		Label msgPlayers = new Label("Currently no players");
+		msgPlayers.getStyleClass().add("empty-view-msg");
+		playerList.setPlaceholder(msgPlayers);
+		
+		Label msgRequests = new Label("Currently no requests");
+		msgRequests.getStyleClass().add("empty-view-msg");
+		requestList.setPlaceholder(msgRequests);
+	}
 	
 	@FXML
 	private void chatSendAction(ActionEvent event) {
@@ -185,7 +200,7 @@ public class LobbyController {
 			box.getChildren().add(name);
 			box.getChildren().add(button);
 
-			box.setStyle("-fx-padding: 8px; -fx-border-width: 0 0 1 0; -fx-border-color: #ccc");
+			box.getStyleClass().add("list-items");
 			
 			AnchorPane.setLeftAnchor(name, 0.0);
 			AnchorPane.setTopAnchor(name, 0.0);
@@ -224,7 +239,8 @@ public class LobbyController {
 			
 			flow.setTextAlignment(TextAlignment.CENTER);
 			
-			flow.setStyle("-fx-font-size: 16px; -fx-padding: 8px 0 8px 0; -fx-border-width: 0 0 1px 0; -fx-border-color: #cccccc;");
+			flow.setStyle("-fx-font-size: 16px;");
+			flow.getStyleClass().add("list-items");
 			
 			nodes.add(flow);
 		}
@@ -292,6 +308,8 @@ public class LobbyController {
 			box.getChildren().add(name);
 			box.getChildren().add(accept);
 			box.getChildren().add(reject);
+                        
+                        box.getStyleClass().add("list-view");
 			
 			AnchorPane.setLeftAnchor(name, 0.0);
 			AnchorPane.setTopAnchor(name, 0.0);
