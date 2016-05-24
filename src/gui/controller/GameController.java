@@ -23,6 +23,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import checkersBoard.Board;
+import javafx.scene.control.SplitPane;
 
 public class GameController {
 
@@ -43,6 +44,9 @@ public class GameController {
 	
 	@FXML
 	private AnchorPane glass;
+	
+	@FXML
+	private SplitPane divider;
 	
 	@FXML
 	private AnchorPane animationHolder;
@@ -174,6 +178,10 @@ public class GameController {
 	
 	public void setBlockBoard(boolean block) {
 		Platform.runLater(() -> glass.setVisible(block));
+	}
+	
+	public void setDivider() {
+		divider.setDividerPositions(0.7);
 	}
 	
 }

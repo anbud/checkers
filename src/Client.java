@@ -251,6 +251,14 @@ public class Client {
 		c.getBoard().onTurn(() -> {
 			out.println("END_TURN");
 		});
+		
+		c.getBoard().onWin(() -> {
+			out.println("WON");
+		});
+		
+		c.getBoard().onDraw(() -> {
+			out.println("DRAW");
+		});
 	}
 	
 	public static void main(String[] args) throws IOException {
