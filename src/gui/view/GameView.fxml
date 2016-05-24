@@ -12,7 +12,7 @@
   <items>
     <AnchorPane>
          <children>
-            <FlowPane fx:id="gameBoardHolder" alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="1000.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="90.0">
+            <FlowPane fx:id="gameBoardHolder" alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="0.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="90.0">
                <children>
                   <AnchorPane fx:id="animationHolder">
                      <children>

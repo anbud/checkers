@@ -1,7 +1,6 @@
 package gui.controller;
 
 import gui.Action;
-import gui.ActionXY;
 import gui.Gui;
 import gui.GuiFigure;
 import javafx.animation.KeyFrame;
@@ -163,65 +162,6 @@ public class GameController {
 
 			chatList.scrollTo(chatList.getItems().size());
 		});
-	}
-	
-	public void setFigure(int x, int y, GuiFigure figure) {
-		if(figure == GuiFigure.NONE) {
-			board[x][y].getChildren().clear();
-			return;
-		}
-		
-		double size = Math.floor( gameBoard.getWidth()/10 ) * 0.8;
-			
-		ImageView image = new ImageView( Gui.class.getResource(figure.file).toExternalForm() );
-		image.setFitHeight(size);
-		image.setFitWidth(size);		
-        board[x][y].getChildren().add(image);
-	}
-	
-	public void moveFigure(int srcx, int srcy, int destx, int desty) {
-		this.moveFigure(srcx, srcy, destx, desty, null);
-	}
-	
-	public void moveFigure(int srcx, int srcy, int destx, int desty, Action callback) {
-		if(board[srcx][srcy].getChildren().isEmpty())
-			return;
-		
-		Node piece = board[srcx][srcy].getChildren().get(0);
-		
-		Bounds src = board[srcx][srcy].getBoundsInParent();
-		Bounds dest = board[destx][desty].getBoundsInParent();
-		Bounds imgb = piece.getBoundsInParent();
-		
-		board[srcx][srcy].getChildren().clear();
-		animationHolder.getChildren().add(piece);
-		piece.relocate(src.getMinX() + imgb.getMinX(), src.getMinY() + imgb.getMinY());
-                
-		double dur = 400;
-		
-		Timeline timeline = new Timeline();
-		timeline.setCycleCount(1);
-		timeline.setAutoReverse(false);
-		timeline.getKeyFrames().add(
-				new KeyFrame(
-						Duration.millis(dur),
-						new KeyValue(piece.layoutXProperty(), dest.getMinX() + imgb.getMinX())));
-		timeline.getKeyFrames().add(
-				new KeyFrame(
-						Duration.millis(dur),
-						new KeyValue(piece.layoutYProperty(), dest.getMinY() + imgb.getMinY())));
-		
-		timeline.setOnFinished((e) -> {
-			animationHolder.getChildren().remove(piece);
-			board[destx][desty].getChildren().add(piece);
-			
-			if(callback != null)
-				Platform.runLater(() -> {
-					callback.handle();
-				});
-		});
-		
-		timeline.play();
 	}
 	
 	public void setGameInfo(String info) {

@@ -450,7 +450,6 @@ public class Board extends TilePane {
 		else if (isLost()) {
 			if(winHandler != null)
 				winHandler.handle();
-			System.out.println("lost");
 		}
 		else if (turnHandler != null) {
 			turnHandler.handle();
