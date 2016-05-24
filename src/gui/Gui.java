@@ -35,8 +35,8 @@ public class Gui extends Application {
 	
 	private static CountDownLatch cdl = new CountDownLatch(2);
 	
-	public static Image chatMute = new Image( Gui.class.getResource("view/img/mute_chat.png").toExternalForm() );
-	public static Image chatUnmute = new Image( Gui.class.getResource("view/img/unmute_chat.png").toExternalForm() );
+	public static Image chatMute;
+	public static Image chatUnmute;
 	
 	public Gui() {
 		instance = this;
@@ -75,6 +75,8 @@ public class Gui extends Application {
 	
 	@Override
 	public void init() {
+                chatMute = new Image(Gui.class.getResource("view/img/mute_chat.png").toExternalForm());
+                chatUnmute = new Image(Gui.class.getResource("view/img/unmute_chat.png").toExternalForm());
 		preloadViews();
 		
 		if(onInitHandler != null)
