@@ -227,7 +227,7 @@ public class LobbyController {
 			name.setText(s);
 			name.getStyleClass().add("request-label");
 			
-			Button button = new Button("request");
+			Button button = new Button("challenge");
 			button.getStyleClass().add("request-button");
 			
 			final String ss = s;

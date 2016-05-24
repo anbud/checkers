@@ -181,6 +181,16 @@ public class Client {
 	private void initLobbyCallbacks() {
                 aLobbyMsg = new AudioClip(Gui.class.getResource("view/sound/message.mp3").toExternalForm());
                 aLobbyMsg.setVolume(0.5);
+                
+                l.onMute(() -> {
+                    if (!l.isMuted()) {
+                        l.setMuted(true);
+                        aLobbyMsg.setVolume(0);
+                    } else {
+                        l.setMuted(false);
+                        aLobbyMsg.setVolume(0.5);
+                    }
+                });
             
 		l.onLoginButton(() -> {
 			l.setButtonEnabled(false);
@@ -226,7 +236,7 @@ public class Client {
 		
 		l.onRequestButton((uname) -> {
 			out.println("GAME REQUEST: " + uname);
-			
+			l.addChatInfo("You've challenged " + uname);
 			try { queue.take(); } catch (Exception e) {}
 		});
 		
@@ -237,6 +247,16 @@ public class Client {
                 aYourTurn.setVolume(0.5);
                 aGameMsg = new AudioClip(Gui.class.getResource("view/sound/message.mp3").toExternalForm());
                 aGameMsg.setVolume(0.5);
+                
+                c.onMute(() -> {
+                    if (!c.isMuted()) {
+                        c.setMuted(true);
+                        aGameMsg.setVolume(0);
+                    } else {
+                        c.setMuted(false);
+                        aGameMsg.setVolume(0.5);
+                    }
+                });
                 
 		c.onLeaveButton(() -> {
 			out.println("LEAVE GAME");
