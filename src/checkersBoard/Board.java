@@ -204,6 +204,8 @@ public class Board extends TilePane {
 		myPosition = dest;
 		
 		dest.setFigure(temp);
+		dest.getImage().setVisible(false);
+		dest.setIcon(tempIcon);
 		
 		AnchorPane parent = (AnchorPane) getParent();
 		
@@ -229,16 +231,12 @@ public class Board extends TilePane {
 			timeline.setOnFinished((e) -> {
 				parent.getChildren().remove(animImg);
 
-				dest.setIcon(tempIcon);
+				dest.getImage().setVisible(true);
 			});
 			
 			timeline.play();
 		
 		});
-		
-		try {
-			Thread.sleep((long)dur);
-		} catch(Exception e) {}
 		
 	}
 	
@@ -287,7 +285,7 @@ public class Board extends TilePane {
 				check = true;
 			} else {
 				dest.highlight(true);
-				//possibleMoves.add(possibleMoves.remove(0));
+				possibleMoves.add(possibleMoves.remove(0));
 			}
 		} else {
 			if (possibleMoves.indexOf(dest) > 0) {
@@ -452,6 +450,7 @@ public class Board extends TilePane {
 		else if (isLost()) {
 			if(winHandler != null)
 				winHandler.handle();
+			System.out.println("lost");
 		}
 		else if (turnHandler != null) {
 			turnHandler.handle();
