@@ -93,6 +93,8 @@ public class GameController {
 		
 		gameBoardHolder.widthProperty().addListener(boardSizeListener);
 		gameBoardHolder.heightProperty().addListener(boardSizeListener);
+		
+		setMuted(false);
 	}
 	
 	@FXML
