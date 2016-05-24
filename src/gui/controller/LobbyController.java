@@ -309,8 +309,6 @@ public class LobbyController {
 			box.getChildren().add(accept);
 			box.getChildren().add(reject);
                         
-                        box.getStyleClass().add("list-view");
-			
 			AnchorPane.setLeftAnchor(name, 0.0);
 			AnchorPane.setTopAnchor(name, 0.0);
 			AnchorPane.setBottomAnchor(name, 0.0);
