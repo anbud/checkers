@@ -1,16 +1,10 @@
 package gui.controller;
 
 import gui.Action;
-import gui.Gui;
-import gui.GuiFigure;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -21,9 +15,10 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
-import javafx.util.Duration;
 import checkersBoard.Board;
+import gui.Gui;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tooltip;
 
 public class GameController {
 
@@ -51,10 +46,17 @@ public class GameController {
 	@FXML
 	private AnchorPane animationHolder;
 	
+	@FXML
+	private ImageView chatMute;
+	
+	@FXML
+	private Tooltip muteTooltip;
+	
 	private FlowPane[][] board = new FlowPane[10][10];
 	
 	private Action chatSendHandler;
 	private Action leaveGameHandler;
+	private Action chatMuteHandler;
 	
 	@FXML
 	private void initialize() {
@@ -113,6 +115,16 @@ public class GameController {
 		});
 	}
 	
+	@FXML
+	private void chatMuteAction(ActionEvent event) {
+		if(chatMuteHandler == null)
+			return;
+		
+		Platform.runLater(() -> {
+			chatMuteHandler.handle();
+		});
+	}
+	
 	public void setChatInput(String text) {
 		Platform.runLater(() -> chatInput.setText(text));
 	}
@@ -127,6 +139,27 @@ public class GameController {
 	
 	public void onLeaveButton(Action action) {
 		leaveGameHandler = action;
+	}
+	
+	public void onMute(Action action) {
+		chatMuteHandler = action;
+	}
+	
+	public void setMuted(boolean muted) {
+		Platform.runLater(() -> {
+			if(muted) {
+				chatMute.setImage(Gui.chatUnmute);
+				muteTooltip.setText("Enable chat sound");
+			}
+			else {
+				chatMute.setImage(Gui.chatMute);
+				muteTooltip.setText("Mute chat sound");
+			}
+		});
+	}
+	
+	public boolean isMuted() {
+		return chatMute.getImage() == Gui.chatUnmute;
 	}
 	
 	public void addChatMessage(String username, String message, boolean out) {
