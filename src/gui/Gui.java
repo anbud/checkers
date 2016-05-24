@@ -134,6 +134,12 @@ public class Gui extends Application {
 			Node gameView = loader.load();
 			ret = (GameController) loader.getController();
 			
+			GameController temp = ret;
+			
+			gameView.layoutBoundsProperty().addListener((e) -> {
+				Platform.runLater(() -> temp.setDivider());
+			});
+			
 			Platform.runLater(() -> {
 				stage.getScene().setRoot((Parent) gameView);
 			});

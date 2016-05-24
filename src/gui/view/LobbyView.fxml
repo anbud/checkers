@@ -25,7 +25,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <SplitPane dividerPositions="0.7" orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" SplitPane.resizableWithParent="false">
+            <SplitPane dividerPositions="0.6" orientation="VERTICAL" prefHeight="0.0" prefWidth="0.0" SplitPane.resizableWithParent="false">
               <items>
                   <AnchorPane>
                      <children>

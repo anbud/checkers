@@ -203,7 +203,9 @@ public class Board extends TilePane {
 		myPosition = dest;
 
 		dest.setFigure(temp);
-
+		dest.getImage().setVisible(false);
+		dest.setIcon(tempIcon);
+		
 		AnchorPane parent = (AnchorPane) getParent();
 
 		double dur = 300;
@@ -224,18 +226,13 @@ public class Board extends TilePane {
 			timeline.setOnFinished((e) -> {
 				parent.getChildren().remove(animImg);
 
-				dest.setIcon(tempIcon);
+				dest.getImage().setVisible(true);
 			});
 
 			timeline.play();
 
 		});
-
-		try {
-			Thread.sleep((long) dur);
-		} catch (Exception e) {
-		}
-
+		
 	}
 
 	private void addMove(String type, Field source, Field dest) {
