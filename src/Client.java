@@ -13,6 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.media.AudioClip;
 
 public class Client {
 	
@@ -28,6 +29,8 @@ public class Client {
 	
 	private String username;
 	private String whosOnMove;
+
+	private AudioClip aYourTurn, aLobbyMsg, aGameMsg;
 	
 	public Client() {
 		first = true;
@@ -103,6 +106,8 @@ public class Client {
 				String msg = line.substring(line.indexOf(":") + 2);
 				String userSent = msg.substring(0, msg.indexOf(":"));
 				l.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2), userSent.equals(username));
+                                if (c == null)
+                                    aLobbyMsg.play();
 			}
 			else if (line.startsWith("E_LOBBY_INFO")) {
 				String msg = line.substring(line.indexOf(":") + 2);
@@ -112,6 +117,7 @@ public class Client {
 				String msg = line.substring(line.indexOf(":") + 2);
 				String userSent = msg.substring(0, msg.indexOf(":"));
 				c.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2), userSent.equals(username));
+                                aGameMsg.play();
 			} 
 			else if (line.startsWith("E_INFO")) {
 				String msg = line.substring(line.indexOf(":") + 2);
@@ -145,13 +151,14 @@ public class Client {
 						}
 					}
 					first = false;
-					
 				}
 				c.setGameInfo(whosOnMove);
 				if (!whosOnMove.equals(username))
 					c.setBlockBoard(true);
-				else
+				else {
 					c.setBlockBoard(false);
+                                        aYourTurn.play();
+				}
 			}
 			else if (line.equals("E_WON")) 
 				gui.showMessage("We have a winner", "User " + line.substring(line.indexOf(":") + 2) + " won!");
@@ -172,7 +179,9 @@ public class Client {
 	}
 	
 	private void initLobbyCallbacks() {
-		
+                aLobbyMsg = new AudioClip(Gui.class.getResource("view/sound/message.mp3").toExternalForm());
+                aLobbyMsg.setVolume(0.5);
+            
 		l.onLoginButton(() -> {
 			l.setButtonEnabled(false);
 			l.setLoginError("");
@@ -224,7 +233,11 @@ public class Client {
 	}
 	private void initGameCallbacks() {
 		first = true;
-		
+                aYourTurn = new AudioClip(Gui.class.getResource("view/sound/your-turn.mp3").toExternalForm());
+                aYourTurn.setVolume(0.5);
+                aGameMsg = new AudioClip(Gui.class.getResource("view/sound/message.mp3").toExternalForm());
+                aGameMsg.setVolume(0.5);
+                
 		c.onLeaveButton(() -> {
 			out.println("LEAVE GAME");
 			try { queue.take(); } catch (Exception e) {}
