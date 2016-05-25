@@ -50,8 +50,8 @@ public class Client {
 		username = "default";
 		whosOnMove = username;
 		
-		try(Socket client = new Socket("localhost", 110)) {
-		//try(Socket client = new Socket("hekate.zx.rs", 110)) {
+		//try(Socket client = new Socket("localhost", 110)) {
+		try(Socket client = new Socket("hekate.zx.rs", 110)) {
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(client.getOutputStream(), true);
 			
@@ -151,9 +151,9 @@ public class Client {
 					c.getBoard().whoAmI(whosOnMove.equals(username));
 					if (!whosOnMove.equals(username)) {
 						c.getBoard().getParent().setRotate(180);
-						for(Node f: c.getBoard().getChildren()) {
+						for(Node f: c.getBoard().getChildren())
 							f.setRotate(180);
-						}
+							
 					}
 					first = false;
 				}
@@ -165,11 +165,16 @@ public class Client {
 					aYourTurn.play();
 				}
 			}
-			else if (line.equals("E_WON")) 
-				gui.showMessage("We have a winner", "User " + line.substring(line.indexOf(":") + 2) + " won!");
+			else if (line.startsWith("E_WON")) {
+				String winner = line.substring(line.indexOf(":") + 2);
+				if (winner.equals(username))
+					gui.showMessage("We have a winner", "Congratulations, you won!");
+				else
+					gui.showMessage("We have a winner", "You lost.");
+			}
 			
-			else if (line.equals("E_DRAW"))
-				gui.showMessage("It's a draw", "No body wins.");
+			else if (line.startsWith("E_DRAW"))
+				gui.showMessage("It's a draw", "Nobody wins.");
 			
 			else if (line.startsWith("E_GAME_ACCEPTED")) { }
 			else if (line.startsWith("E_GAME_REQUEST")) { }
