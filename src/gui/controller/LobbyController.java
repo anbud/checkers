@@ -65,7 +65,9 @@ public class LobbyController {
 
 	@FXML
 	private void initialize() {
-		Label msgGames = new Label("Currently no games");
+		Label msgGames = new Label("No active games currently");
+                msgGames.setTextAlignment(TextAlignment.CENTER);
+                msgGames.setWrapText(true);
 		msgGames.getStyleClass().add("empty-view-msg");
 		gameList.setPlaceholder(msgGames);
 
@@ -73,7 +75,7 @@ public class LobbyController {
 		msgPlayers.getStyleClass().add("empty-view-msg");
 		playerList.setPlaceholder(msgPlayers);
 		
-		Label msgRequests = new Label("Currently no requests");
+		Label msgRequests = new Label("You've no requests");
 		msgRequests.getStyleClass().add("empty-view-msg");
 		requestList.setPlaceholder(msgRequests);
 		
@@ -183,10 +185,11 @@ public class LobbyController {
 		TextFlow flow = new TextFlow();
 		
 		Text text = new Text(username);
-		text.setStyle("-fx-font-weight: bold;");
+                text.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
 		flow.getChildren().add(text);
 		
 		text = new Text("\n"+message);
+		text.setStyle("-fx-font-size: 14px;");
 		flow.getChildren().add(text);
 		
 		flow.setMaxWidth(chatList.getWidth() - 40);
