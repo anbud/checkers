@@ -244,7 +244,7 @@ public class Board extends TilePane {
 	}
 
 	private boolean isPromotion(Field dest) {
-		if (myPosition.getFigure().getClass() != SimpleFigure.class) {
+		if (myPosition.getFigure().getClass() != QueenFigure.class) {
 			if (((dest.getXX() == TOP) && myPosition.getFigure().getColor().equals(FigureColor.WOODEN))
 					|| ((dest.getXX() == NUM_FIELDS - 1)
 							&& myPosition.getFigure().getColor().equals(FigureColor.RED))) {
