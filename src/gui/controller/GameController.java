@@ -52,8 +52,6 @@ public class GameController {
 	@FXML
 	private Tooltip muteTooltip;
 	
-	private FlowPane[][] board = new FlowPane[10][10];
-	
 	private Action chatSendHandler;
 	private Action leaveGameHandler;
 	private Action chatMuteHandler;
@@ -168,10 +166,11 @@ public class GameController {
 		TextFlow flow = new TextFlow();
 		
 		Text text = new Text(username);
-		text.setStyle("-fx-font-weight: bold;");
+		text.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
 		flow.getChildren().add(text);
 		
 		text = new Text("\n"+message);
+		text.setStyle("-fx-font-size: 14px;");
 		flow.getChildren().add(text);
 		
 		flow.setMaxWidth(chatList.getWidth() - 30);
@@ -181,7 +180,7 @@ public class GameController {
 		
 		Platform.runLater(() -> {
 			chatList.getItems().add(flow);
-
+		
 			chatList.scrollTo(chatList.getItems().size());
 		});
 	}

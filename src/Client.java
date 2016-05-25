@@ -11,7 +11,6 @@ import java.util.LinkedList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.media.AudioClip;
 
@@ -36,6 +35,14 @@ public class Client {
 		first = true;
 		gui = Gui.getInstance();
 		l = gui.loadLobbyView(true);
+		
+		aYourTurn = new AudioClip(Gui.class.getResource("view/sound/your-turn.mp3").toExternalForm());
+        aGameMsg = new AudioClip(Gui.class.getResource("view/sound/message.mp3").toExternalForm());
+        aLobbyMsg = new AudioClip(Gui.class.getResource("view/sound/message.mp3").toExternalForm());
+        aYourTurn.setVolume(0.5);
+        aGameMsg.setVolume(0.5);
+        aLobbyMsg.setVolume(0.5);
+		
 		initialize();
 	}
 	
@@ -59,12 +66,10 @@ public class Client {
 				
 			} catch (Exception e) {
 				gui.showMessage("Server failure", "Andrej ugasio server (sad face)");
-				e.printStackTrace();
 			}
 			
 		} catch (Exception e) {
-			gui.showMessage("Server error", "Server's not up.");
-			Platform.exit();
+			gui.showMessage("Server error", "Server's not up. \nTry from localhost.", true);
 		}
 	}
 
@@ -157,7 +162,7 @@ public class Client {
 					c.setBlockBoard(true);
 				else {
 					c.setBlockBoard(false);
-                                        aYourTurn.play();
+					aYourTurn.play();
 				}
 			}
 			else if (line.equals("E_WON")) 
@@ -179,18 +184,16 @@ public class Client {
 	}
 	
 	private void initLobbyCallbacks() {
-                aLobbyMsg = new AudioClip(Gui.class.getResource("view/sound/message.mp3").toExternalForm());
+        
+        l.onMute(() -> {
+            if (!l.isMuted()) {
+                l.setMuted(true);
+                aLobbyMsg.setVolume(0);
+            } else {
+                l.setMuted(false);
                 aLobbyMsg.setVolume(0.5);
-                
-                l.onMute(() -> {
-                    if (!l.isMuted()) {
-                        l.setMuted(true);
-                        aLobbyMsg.setVolume(0);
-                    } else {
-                        l.setMuted(false);
-                        aLobbyMsg.setVolume(0.5);
-                    }
-                });
+            }
+        });
             
 		l.onLoginButton(() -> {
 			l.setButtonEnabled(false);
@@ -243,20 +246,16 @@ public class Client {
 	}
 	private void initGameCallbacks() {
 		first = true;
-                aYourTurn = new AudioClip(Gui.class.getResource("view/sound/your-turn.mp3").toExternalForm());
-                aYourTurn.setVolume(0.5);
-                aGameMsg = new AudioClip(Gui.class.getResource("view/sound/message.mp3").toExternalForm());
+        
+        c.onMute(() -> {
+            if (!c.isMuted()) {
+                c.setMuted(true);
+                aGameMsg.setVolume(0);
+            } else {
+                c.setMuted(false);
                 aGameMsg.setVolume(0.5);
-                
-                c.onMute(() -> {
-                    if (!c.isMuted()) {
-                        c.setMuted(true);
-                        aGameMsg.setVolume(0);
-                    } else {
-                        c.setMuted(false);
-                        aGameMsg.setVolume(0.5);
-                    }
-                });
+            }
+        });
                 
 		c.onLeaveButton(() -> {
 			out.println("LEAVE GAME");
@@ -302,8 +301,11 @@ public class Client {
 		
 		Gui.onClose(() -> {
 			thread.interrupt();
-			out.println("PONG");
+			try {
+				out.println("PONG");
+			} catch (Exception e) { }
 		});
+                
 		new Client();
 	}
 }

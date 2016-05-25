@@ -158,13 +158,18 @@ public class Gui extends Application {
 	}
 	
 	public void showMessage(String header, String message) {
+		showMessage(header, message, false);
+	}
+	
+	public void showMessage(String header, String message, boolean kill) {
 		Platform.runLater(() -> {
 			Alert a = new Alert(Alert.AlertType.INFORMATION);
 			a.setContentText(message);
 			a.setHeaderText(header);
 			a.showAndWait();
+			if (kill)
+				Platform.exit();
 		});
-		
 	}
 
 	public static void main(String[] args) {
