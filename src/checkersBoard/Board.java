@@ -256,11 +256,12 @@ public class Board extends TilePane {
 
 	private void doPercussiveMove(Field dest) {
 		if (myPosition.getFigure().getClass() == QueenFigure.class) {
-			if (possibleMoves.indexOf(dest) > 0 && possibleMoves.indexOf(dest) < captured.size()) {
+			queenNumMoves++;
+			if (possibleMoves.indexOf(dest) > 0 && queenNumMoves < captured.size()) {						
+				queenNumMoves--;
 				return;
 			}
-			addMove(Move.PERCUSSIVE, myPosition, dest);
-			queenNumMoves++;
+			addMove(Move.PERCUSSIVE, myPosition, dest);			
 			changePosition(dest);
 			if (queenNumMoves >= captured.size()) {
 				queenNumMoves = 0;
@@ -275,6 +276,7 @@ public class Board extends TilePane {
 				check = true;
 			} else {
 				dest.highlight(true);				
+				possibleMoves.remove(dest);
 			}
 		} else {
 			if (possibleMoves.indexOf(dest) > 0) {
