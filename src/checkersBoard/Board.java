@@ -255,7 +255,7 @@ public class Board extends TilePane {
 	}
 
 	private void doPercussiveMove(Field dest) {
-		if (myPosition.getFigure().getClass() == SimpleFigure.class) {
+		if (myPosition.getFigure().getClass() == QueenFigure.class) {
 			if (possibleMoves.indexOf(dest) > 0 && possibleMoves.indexOf(dest) < captured.size()) {
 				return;
 			}
