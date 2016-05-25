@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import figures.Figure;
 import figures.FigureColor;
 import figures.QueenFigure;
+import figures.SimpleFigure;
 import gui.Action;
 import gui.Gui;
 import gui.GuiFigure;
@@ -93,10 +94,10 @@ public class Board extends TilePane {
 			for (int j = 0; j < NUM_FIELDS; j++) {
 				Figure figure = null;
 				if ((i + j) % 2 != 0 && (i < 4)) {
-					figure = new QueenFigure(redFigure, FigureColor.RED, this);
+					figure = new SimpleFigure(redFigure, FigureColor.RED, this);
 				}
 				if ((i + j) % 2 != 0 && (i > 5)) {
-					figure = new QueenFigure(woodenFigure, FigureColor.WOODEN, this);
+					figure = new SimpleFigure(woodenFigure, FigureColor.WOODEN, this);
 				}
 
 				double size = getWidth() / 10;
@@ -243,7 +244,7 @@ public class Board extends TilePane {
 	}
 
 	private boolean isPromotion(Field dest) {
-		if (myPosition.getFigure().getClass() != QueenFigure.class) {
+		if (myPosition.getFigure().getClass() != SimpleFigure.class) {
 			if (((dest.getXX() == TOP) && myPosition.getFigure().getColor().equals(FigureColor.WOODEN))
 					|| ((dest.getXX() == NUM_FIELDS - 1)
 							&& myPosition.getFigure().getColor().equals(FigureColor.RED))) {
@@ -254,7 +255,7 @@ public class Board extends TilePane {
 	}
 
 	private void doPercussiveMove(Field dest) {
-		if (myPosition.getFigure().getClass() == QueenFigure.class) {
+		if (myPosition.getFigure().getClass() == SimpleFigure.class) {
 			if (possibleMoves.indexOf(dest) > 0 && possibleMoves.indexOf(dest) < captured.size()) {
 				return;
 			}
