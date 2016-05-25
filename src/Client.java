@@ -297,7 +297,7 @@ public class Client {
 	public static void main(String[] args) throws IOException {
 		Thread thread = Thread.currentThread();
 		new Thread(() -> {
-			Application.launch(Gui.class, args);
+			Application.launch(Gui.class, args);			
 		}).start();
 		
 		Gui.onClose(() -> {

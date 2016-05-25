@@ -3,15 +3,14 @@ package checkersBoard;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import figures.Figure;
 import figures.FigureColor;
 import figures.QueenFigure;
-import figures.SimpleFigure;
 import gui.Action;
 import gui.Gui;
 import gui.GuiFigure;
-import java.util.function.Consumer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -94,10 +93,10 @@ public class Board extends TilePane {
 			for (int j = 0; j < NUM_FIELDS; j++) {
 				Figure figure = null;
 				if ((i + j) % 2 != 0 && (i < 4)) {
-					figure = new SimpleFigure(redFigure, FigureColor.RED, this);
+					figure = new QueenFigure(redFigure, FigureColor.RED, this);
 				}
 				if ((i + j) % 2 != 0 && (i > 5)) {
-					figure = new SimpleFigure(woodenFigure, FigureColor.WOODEN, this);
+					figure = new QueenFigure(woodenFigure, FigureColor.WOODEN, this);
 				}
 
 				double size = getWidth() / 10;
@@ -179,12 +178,6 @@ public class Board extends TilePane {
 	}
 
 	public void changePosition(Field dest) {
-		/*
-		 * Figure temp = myPosition.getFigure(); Image tempIcon =
-		 * myPosition.getIcon(); myPosition.setFigure(null);
-		 * myPosition.setIcon(null); dest.setFigure(temp);
-		 * dest.setIcon(tempIcon); myPosition = dest;
-		 */
 
 		Figure temp = myPosition.getFigure();
 		Image tempIcon = myPosition.getIcon();
@@ -280,8 +273,7 @@ public class Board extends TilePane {
 				checkGame();
 				check = true;
 			} else {
-				dest.highlight(true);
-				possibleMoves.add(possibleMoves.remove(0));
+				dest.highlight(true);				
 			}
 		} else {
 			if (possibleMoves.indexOf(dest) > 0) {
