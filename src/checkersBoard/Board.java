@@ -3,6 +3,7 @@ package checkersBoard;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import figures.Figure;
 import figures.FigureColor;
@@ -11,7 +12,6 @@ import figures.SimpleFigure;
 import gui.Action;
 import gui.Gui;
 import gui.GuiFigure;
-import java.util.function.Consumer;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -179,12 +179,6 @@ public class Board extends TilePane {
 	}
 
 	public void changePosition(Field dest) {
-		/*
-		 * Figure temp = myPosition.getFigure(); Image tempIcon =
-		 * myPosition.getIcon(); myPosition.setFigure(null);
-		 * myPosition.setIcon(null); dest.setFigure(temp);
-		 * dest.setIcon(tempIcon); myPosition = dest;
-		 */
 
 		Figure temp = myPosition.getFigure();
 		Image tempIcon = myPosition.getIcon();
@@ -262,11 +256,12 @@ public class Board extends TilePane {
 
 	private void doPercussiveMove(Field dest) {
 		if (myPosition.getFigure().getClass() == QueenFigure.class) {
-			if (possibleMoves.indexOf(dest) > 0 && possibleMoves.indexOf(dest) < captured.size()) {
+			queenNumMoves++;
+			if (possibleMoves.indexOf(dest) > 0 && queenNumMoves < captured.size()) {						
+				queenNumMoves--;
 				return;
 			}
-			addMove(Move.PERCUSSIVE, myPosition, dest);
-			queenNumMoves++;
+			addMove(Move.PERCUSSIVE, myPosition, dest);			
 			changePosition(dest);
 			if (queenNumMoves >= captured.size()) {
 				queenNumMoves = 0;
@@ -280,8 +275,8 @@ public class Board extends TilePane {
 				checkGame();
 				check = true;
 			} else {
-				dest.highlight(true);
-				possibleMoves.add(possibleMoves.remove(0));
+				dest.highlight(true);				
+				possibleMoves.remove(dest);
 			}
 		} else {
 			if (possibleMoves.indexOf(dest) > 0) {
