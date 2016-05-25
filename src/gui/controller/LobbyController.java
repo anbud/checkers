@@ -66,8 +66,8 @@ public class LobbyController {
 	@FXML
 	private void initialize() {
 		Label msgGames = new Label("No active games currently");
-                msgGames.setTextAlignment(TextAlignment.CENTER);
-                msgGames.setWrapText(true);
+		msgGames.setTextAlignment(TextAlignment.CENTER);
+        msgGames.setWrapText(true);
 		msgGames.getStyleClass().add("empty-view-msg");
 		gameList.setPlaceholder(msgGames);
 
@@ -185,7 +185,7 @@ public class LobbyController {
 		TextFlow flow = new TextFlow();
 		
 		Text text = new Text(username);
-                text.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+		text.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
 		flow.getChildren().add(text);
 		
 		text = new Text("\n"+message);
@@ -196,7 +196,6 @@ public class LobbyController {
 		
 		if(out)
 			flow.setTextAlignment(TextAlignment.RIGHT);
-		
 		
 		Platform.runLater(() -> {
 			chatList.getItems().add(flow);
@@ -315,9 +314,9 @@ public class LobbyController {
 			
 			final String ss = s;
 			accept.setOnMouseClicked((e) -> {
-				if(acceptHandler != null) {
+				if(acceptHandler != null)
 					acceptHandler.accept(ss);
-				}
+				
 			});
 			
 			accept.setOnMouseExited((e) -> {
@@ -343,9 +342,9 @@ public class LobbyController {
 			});
 			
 			reject.setOnMouseClicked((e) -> {
-				if(rejectHandler != null) {
+				if(rejectHandler != null)
 					rejectHandler.accept(ss);
-				}
+					
 			});
 
 			AnchorPane box = new AnchorPane();

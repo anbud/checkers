@@ -50,8 +50,8 @@ public class Client {
 		username = "default";
 		whosOnMove = username;
 		
-		//try(Socket client = new Socket("localhost", 110)) {
-		try(Socket client = new Socket("hekate.zx.rs", 110)) {
+		try(Socket client = new Socket("localhost", 110)) {
+		//try(Socket client = new Socket("hekate.zx.rs", 110)) {
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(client.getOutputStream(), true);
 			
@@ -69,7 +69,7 @@ public class Client {
 			}
 			
 		} catch (Exception e) {
-			gui.showMessage("Server error", "Server's not up. \nTry from localhost.", true);
+			gui.showMessage("Server error", "Server's not up.\nTry from localhost.", true);
 		}
 	}
 
@@ -111,8 +111,8 @@ public class Client {
 				String msg = line.substring(line.indexOf(":") + 2);
 				String userSent = msg.substring(0, msg.indexOf(":"));
 				l.addChatMessage(userSent, msg.substring(msg.indexOf(":") + 2), userSent.equals(username));
-                                if (c == null)
-                                    aLobbyMsg.play();
+					if (c == null)
+						aLobbyMsg.play();
 			}
 			else if (line.startsWith("E_LOBBY_INFO")) {
 				String msg = line.substring(line.indexOf(":") + 2);
@@ -151,7 +151,7 @@ public class Client {
 					c.getBoard().whoAmI(whosOnMove.equals(username));
 					if (!whosOnMove.equals(username)) {
 						c.getBoard().getParent().setRotate(180);
-						for(Node f : c.getBoard().getChildren()) {
+						for(Node f: c.getBoard().getChildren()) {
 							f.setRotate(180);
 						}
 					}
@@ -173,13 +173,10 @@ public class Client {
 			
 			else if (line.startsWith("E_GAME_ACCEPTED")) { }
 			else if (line.startsWith("E_GAME_REQUEST")) { }
-			else if (line.startsWith("E_MULTIPLE_REQUESTS")) {
+			else if (line.startsWith("E_MULTIPLE_REQUESTS"))
 				queue.add(line);
-			}
-			else {
-				queue.add(line);
-				System.out.println(line);
-			}
+
+			else { }
 		} catch (IOException e) { }
 	}
 	
