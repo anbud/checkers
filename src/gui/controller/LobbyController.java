@@ -229,9 +229,26 @@ public class LobbyController {
 			name.setText(s);
 			name.getStyleClass().add("request-label");
 			
-			Button button = new Button("challenge");
-			button.getStyleClass().add("request-button");
+			ImageView challenge = new ImageView(Gui.class.getResource("view/img/challenge.png").toExternalForm());
+			ImageView challengeHover = new ImageView(Gui.class.getResource("view/img/challenge-hover.png").toExternalForm());
 			
+			challenge.setFitHeight(20);
+			challenge.setFitWidth(20);
+			challengeHover.setFitHeight(20);
+			challengeHover.setFitWidth(20);
+			
+			Button button = new Button("", challenge);
+			button.setTooltip(new Tooltip("challenge " + s));
+			button.getStyleClass().add("request-accept");
+			
+			button.setOnMouseEntered((e) -> {
+				button.setGraphic(challengeHover);
+			});
+
+			button.setOnMouseExited((e) -> {
+				button.setGraphic(challenge);
+			});
+
 			final String ss = s;
 			button.setOnMouseClicked((e) -> {
 				if(requestHandler != null) {

@@ -1,11 +1,12 @@
 package gui;
 
-import java.util.concurrent.CountDownLatch;
-
 import gui.controller.GameController;
 import gui.controller.LobbyController;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -75,8 +76,8 @@ public class Gui extends Application {
 	
 	@Override
 	public void init() {
-                chatMute = new Image(Gui.class.getResource("view/img/mute_chat.png").toExternalForm());
-                chatUnmute = new Image(Gui.class.getResource("view/img/unmute_chat.png").toExternalForm());
+		chatMute = new Image(Gui.class.getResource("view/img/mute_chat.png").toExternalForm());
+        chatUnmute = new Image(Gui.class.getResource("view/img/unmute_chat.png").toExternalForm());
 		preloadViews();
 		
 		if(onInitHandler != null)
@@ -93,6 +94,8 @@ public class Gui extends Application {
 		stage.setTitle("Checkers - special thanks to UPS");
 		
 		stage.setScene(new Scene(new AnchorPane(), 950, 650));
+		
+		stage.getIcons().add(new Image(getClass().getResourceAsStream("view/img/cup.png")));
 		
 		stage.show();
 		
@@ -185,22 +188,24 @@ public class Gui extends Application {
 		LobbyController c = gui.loadLobbyView(false);
 		
 		List<String> a = new ArrayList<>();
-		a.add("aaa");
-		a.add("bbb");
-		
+		a.add("stefan");
+		a.add("anbud");
+		a.add("vsakos");
+		a.add("ridjis");
 		c.setPlayers(a);
 		
 		List<String> b = new ArrayList<>();
-		b.add("asd poi");
-		b.add("123 456");
-		
+		b.add("ridjis stefan");
+		b.add("anbud vsakos");
+		b.add("john doe");
 		c.setGames(b);
 		
 		//gui.showMessage("123","asd");
 		
 		List<String> d = new ArrayList<>();
-		d.add("asdpoi");
-		d.add("asdpoi2");
+		d.add("doe");
+		d.add("john");
+		d.add("anbud");
 		
 		c.setRequests(d);
 		
